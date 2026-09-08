@@ -1,0 +1,32 @@
+name: Prompt improvement
+description: Propose a behavior change backed by repeatable evaluation.
+title: "[Prompt]: "
+labels: [prompt, evaluation]
+body:
+  - type: textarea
+    id: failure
+    attributes:
+      label: Failure mode
+      description: What important evidence behavior fails today?
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed instruction change
+    validations:
+      required: true
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: Before/after evaluation
+      description: Include model/mode, date, number of runs, all rubric scores, locator errors, and regressions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I can add or update a synthetic fixture for this behavior.
+
