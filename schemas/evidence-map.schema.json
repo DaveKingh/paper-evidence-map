@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/YOUR_USERNAME/paper-evidence-map/schemas/evidence-map.schema.json",
+  "$id": "https://github.com/DaveKingh/paper-evidence-map/schemas/evidence-map.schema.json",
   "title": "Paper Evidence Map",
   "type": "object",
   "required": ["paper", "coverage", "claims", "unknowns"],
@@ -89,4 +89,5 @@
   },
   "additionalProperties": false
 }
+
 

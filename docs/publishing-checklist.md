@@ -1,9 +1,9 @@
-# Publishing checklist
+﻿# Publishing checklist
 
 ## Identity and metadata
 
 - [ ] Choose the final repository owner and confirm the name `paper-evidence-map`.
-- [ ] Replace every `YOUR_USERNAME` value (`python scripts/validate.py` lists them).
+- [ ] Replace every `DaveKingh` value (`python scripts/validate.py` lists them).
 - [ ] Replace the generic copyright holder in `LICENSE` if you want a personal or organization name.
 - [ ] Update `CITATION.cff` authors and repository URL.
 - [ ] Use the description and topics in `docs/launch-plan.md`.
@@ -29,3 +29,4 @@
 ## License choice
 
 MIT is used here because it is familiar, permissive, and simple for code, prompts, and documentation in one small repository. If you require attribution for prompt reuse or want different terms for content and code, obtain legal advice before replacing it with a dual-license approach.
+

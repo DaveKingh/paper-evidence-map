@@ -1,66 +1,67 @@
-# 发布到 GitHub
+﻿# 鍙戝竷鍒?GitHub
 
-## 1. 发布前只需替换两类信息
+## 1. 鍙戝竷鍓嶅彧闇€鏇挎崲涓ょ被淇℃伅
 
-在仓库根目录搜索 `YOUR_USERNAME`，替换成你的 GitHub 用户名；再按需要把 `LICENSE` 和 `CITATION.cff` 中的作者改成你的姓名或组织名。
+鍦ㄤ粨搴撴牴鐩綍鎼滅储 `DaveKingh`锛屾浛鎹㈡垚浣犵殑 GitHub 鐢ㄦ埛鍚嶏紱鍐嶆寜闇€瑕佹妸 `LICENSE` 鍜?`CITATION.cff` 涓殑浣滆€呮敼鎴愪綘鐨勫鍚嶆垨缁勭粐鍚嶃€?
 
-运行：
+杩愯锛?
 
 ```bash
 python scripts/validate.py
 python scripts/validate.py --response examples/synthetic/expected-output.md
 ```
 
-两条命令都应显示 `PASS`。替换完成后，不应再出现 `YOUR_USERNAME` 提示。
+涓ゆ潯鍛戒护閮藉簲鏄剧ず `PASS`銆傛浛鎹㈠畬鎴愬悗锛屼笉搴斿啀鍑虹幇 `DaveKingh` 鎻愮ず銆?
 
-## 2. 用 GitHub 网页发布（最适合第一次）
+## 2. 鐢?GitHub 缃戦〉鍙戝竷锛堟渶閫傚悎绗竴娆★級
 
-1. 在 GitHub 点击 **New repository**。
-2. Repository name 填 `paper-evidence-map`。
-3. Description 使用 `docs/launch-plan.md` 中的推荐文案。
-4. 选择 **Public**。
-5. 不要让 GitHub额外生成 README、`.gitignore` 或 License，本仓库已经包含这些文件。
-6. 创建后按 GitHub 页面提示上传仓库全部内容，保留 `.github` 等以点开头的目录。
-7. 在 Settings → General → Social preview 上传由 `assets/demo.svg` 导出的 1280×640 PNG。
-8. 开启 Issues、Discussions，并按 `docs/publishing-checklist.md` 完成其余设置。
+1. 鍦?GitHub 鐐瑰嚮 **New repository**銆?
+2. Repository name 濉?`paper-evidence-map`銆?
+3. Description 浣跨敤 `docs/launch-plan.md` 涓殑鎺ㄨ崘鏂囨銆?
+4. 閫夋嫨 **Public**銆?
+5. 涓嶈璁?GitHub棰濆鐢熸垚 README銆乣.gitignore` 鎴?License锛屾湰浠撳簱宸茬粡鍖呭惈杩欎簺鏂囦欢銆?
+6. 鍒涘缓鍚庢寜 GitHub 椤甸潰鎻愮ず涓婁紶浠撳簱鍏ㄩ儴鍐呭锛屼繚鐣?`.github` 绛変互鐐瑰紑澶寸殑鐩綍銆?
+7. 鍦?Settings 鈫?General 鈫?Social preview 涓婁紶鐢?`assets/demo.svg` 瀵煎嚭鐨?1280脳640 PNG銆?
+8. 寮€鍚?Issues銆丏iscussions锛屽苟鎸?`docs/publishing-checklist.md` 瀹屾垚鍏朵綑璁剧疆銆?
 
-## 3. 用命令行发布
+## 3. 鐢ㄥ懡浠よ鍙戝竷
 
-在解压后的仓库目录运行：
+鍦ㄨВ鍘嬪悗鐨勪粨搴撶洰褰曡繍琛岋細
 
 ```bash
 git init
 git add .
 git commit -m "feat: release Paper Evidence Map v0.1.0"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/paper-evidence-map.git
+git remote add origin https://github.com/DaveKingh/paper-evidence-map.git
 git push -u origin main
 ```
 
-其中 `YOUR_USERNAME` 必须替换为你的用户名，并且 GitHub 上要先创建同名空仓库。若使用 GitHub CLI，也可以在本目录运行：
+鍏朵腑 `DaveKingh` 蹇呴』鏇挎崲涓轰綘鐨勭敤鎴峰悕锛屽苟涓?GitHub 涓婅鍏堝垱寤哄悓鍚嶇┖浠撳簱銆傝嫢浣跨敤 GitHub CLI锛屼篃鍙互鍦ㄦ湰鐩綍杩愯锛?
 
 ```bash
 gh repo create paper-evidence-map --public --source=. --remote=origin --push
 ```
 
-## 4. 创建首个 Release
+## 4. 鍒涘缓棣栦釜 Release
 
-1. 打开仓库的 Releases → Draft a new release。
-2. Tag 填 `v0.1.0`，target 选择 `main`。
-3. 标题填 `Paper Evidence Map v0.1.0 — reproducible first release`。
-4. 正文复制 `docs/releases/v0.1.0.md`。
-5. 发布后逐项测试 README 中的链接和下载后的两条验证命令。
+1. 鎵撳紑浠撳簱鐨?Releases 鈫?Draft a new release銆?
+2. Tag 濉?`v0.1.0`锛宼arget 閫夋嫨 `main`銆?
+3. 鏍囬濉?`Paper Evidence Map v0.1.0 鈥?reproducible first release`銆?
+4. 姝ｆ枃澶嶅埗 `docs/releases/v0.1.0.md`銆?
+5. 鍙戝竷鍚庨€愰」娴嬭瘯 README 涓殑閾炬帴鍜屼笅杞藉悗鐨勪袱鏉￠獙璇佸懡浠ゃ€?
 
-## 5. 真正的下载复测
+## 5. 鐪熸鐨勪笅杞藉娴?
 
-用另一个临时目录重新克隆公开仓库：
+鐢ㄥ彟涓€涓复鏃剁洰褰曢噸鏂板厠闅嗗叕寮€浠撳簱锛?
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/paper-evidence-map.git
+git clone https://github.com/DaveKingh/paper-evidence-map.git
 cd paper-evidence-map
 python scripts/validate.py
 python scripts/validate.py --response examples/synthetic/expected-output.md
 ```
 
-然后从 GitHub 页面直接打开中文 Prompt，复制到一个全新的 ChatGPT Project，上传合成论文并发送“第一轮”。只有“重新下载 + 新 Project”都成功，首个版本才算真正可复现。
+鐒跺悗浠?GitHub 椤甸潰鐩存帴鎵撳紑涓枃 Prompt锛屽鍒跺埌涓€涓叏鏂扮殑 ChatGPT Project锛屼笂浼犲悎鎴愯鏂囧苟鍙戦€佲€滅涓€杞€濄€傚彧鏈夆€滈噸鏂颁笅杞?+ 鏂?Project鈥濋兘鎴愬姛锛岄涓増鏈墠绠楃湡姝ｅ彲澶嶇幇銆?
+
 
