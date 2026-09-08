@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/YOUR_USERNAME/paper-evidence-map/schemas/evidence-map.schema.json",
+  "title": "Paper Evidence Map",
+  "type": "object",
+  "required": ["paper", "coverage", "claims", "unknowns"],
+  "properties": {
+    "paper": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": {"type": ["string", "null"]},
+        "authors": {"type": "array", "items": {"type": "string"}},
+        "year": {"type": ["integer", "null"]},
+        "identifier": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["inspected", "inaccessible"],
+      "properties": {
+        "inspected": {"type": "array", "items": {"type": "string"}},
+        "inaccessible": {"type": "array", "items": {"type": "string"}},
+        "claimed_full_read": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "research_question": {"type": ["string", "null"]},
+    "method_chain": {"type": "array", "items": {"type": "string"}},
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "claim", "type", "evidence", "support", "boundary"],
+        "properties": {
+          "id": {"type": "string"},
+          "claim": {"type": "string"},
+          "type": {
+            "enum": ["paper_fact", "author_interpretation", "analyst_judgment", "unknown"]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["locator", "observation"],
+              "properties": {
+                "locator": {"type": ["string", "null"]},
+                "observation": {"type": "string"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "support": {"enum": ["strong", "moderate", "weak", "cannot_judge"]},
+          "boundary": {"type": "string"},
+          "risks": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "consistency_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "locations", "description", "impact"],
+        "properties": {
+          "severity": {"enum": ["high", "medium", "low"]},
+          "locations": {"type": "array", "items": {"type": "string"}},
+          "description": {"type": "string"},
+          "impact": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "item"],
+        "properties": {
+          "category": {"enum": ["not_specified", "inaccessible", "external_source_needed", "replication_needed"]},
+          "item": {"type": "string"},
+          "impact": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "next_checks": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
+

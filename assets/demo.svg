@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Paper Evidence Map workflow</title>
+  <desc id="desc">A paper flows through an evidence map into bounded, auditable conclusions.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071525"/>
+      <stop offset="1" stop-color="#132c3b"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".25"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" rx="28" fill="url(#bg)"/>
+  <circle cx="1080" cy="95" r="170" fill="#2dd4bf" opacity=".08"/>
+  <circle cx="90" cy="610" r="210" fill="#60a5fa" opacity=".07"/>
+
+  <text x="76" y="92" fill="#e6f6ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="38" font-weight="700">Paper Evidence Map</text>
+  <text x="76" y="132" fill="#91a9b7" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20">Don't just summarize a paper. Map what it actually proves.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="76" y="196" width="270" height="354" rx="20" fill="#f8fbfd"/>
+    <rect x="104" y="226" width="132" height="12" rx="6" fill="#163a4e"/>
+    <rect x="104" y="252" width="210" height="7" rx="3.5" fill="#b9c8d0"/>
+    <rect x="104" y="269" width="184" height="7" rx="3.5" fill="#cbd6dc"/>
+    <text x="104" y="315" fill="#163a4e" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="700">Abstract says</text>
+    <rect x="104" y="333" width="210" height="54" rx="10" fill="#fff2dd" stroke="#f3b45b"/>
+    <text x="119" y="357" fill="#784d13" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14">“+8 points on</text>
+    <text x="119" y="376" fill="#784d13" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14">both datasets”</text>
+    <text x="104" y="427" fill="#163a4e" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="700">Table 1 shows</text>
+    <rect x="104" y="445" width="210" height="70" rx="10" fill="#e6f7f4" stroke="#46b9a9"/>
+    <text x="119" y="473" fill="#185e57" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14">Dataset A: +8</text>
+    <text x="119" y="496" fill="#b53f45" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="700">Dataset B: +4</text>
+  </g>
+
+  <path d="M374 373 H468" stroke="#57c7b8" stroke-width="5" stroke-linecap="round"/>
+  <path d="M454 359 L470 373 L454 387" fill="none" stroke="#57c7b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g filter="url(#shadow)">
+    <rect x="492" y="196" width="280" height="354" rx="20" fill="#102c3b" stroke="#2e586c"/>
+    <text x="520" y="237" fill="#8de3d6" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16" font-weight="700">ROUND 1 · EVIDENCE MAP</text>
+    <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">
+      <rect x="520" y="270" width="224" height="46" rx="10" fill="#173b4c"/>
+      <text x="538" y="298" fill="#e6f6ff">Claim</text>
+      <rect x="520" y="329" width="224" height="46" rx="10" fill="#173b4c"/>
+      <text x="538" y="357" fill="#e6f6ff">Evidence · Table 1</text>
+      <rect x="520" y="388" width="224" height="46" rx="10" fill="#173b4c"/>
+      <text x="538" y="416" fill="#e6f6ff">Support · Weak</text>
+      <rect x="520" y="447" width="224" height="66" rx="10" fill="#214151" stroke="#f3b45b"/>
+      <text x="538" y="475" fill="#ffd494">Boundary</text>
+      <text x="538" y="497" fill="#d7e8ef">+8 on A, +4 on B</text>
+    </g>
+  </g>
+
+  <path d="M800 373 H894" stroke="#57c7b8" stroke-width="5" stroke-linecap="round"/>
+  <path d="M880 359 L896 373 L880 387" fill="none" stroke="#57c7b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g filter="url(#shadow)">
+    <rect x="918" y="196" width="206" height="354" rx="20" fill="#f8fbfd"/>
+    <circle cx="1021" cy="275" r="48" fill="#dcf8f2"/>
+    <path d="M997 275 L1014 292 L1048 256" fill="none" stroke="#159a88" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="946" y="355" fill="#163a4e" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="700">Bounded</text>
+    <text x="946" y="382" fill="#163a4e" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="700">Traceable</text>
+    <text x="946" y="409" fill="#163a4e" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="700">Challengeable</text>
+    <rect x="946" y="449" width="150" height="42" rx="21" fill="#163a4e"/>
+    <text x="1021" y="476" text-anchor="middle" fill="#e6f6ff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="700">ROUND 2</text>
+  </g>
+
+  <text x="76" y="620" fill="#7793a3" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15">No separate API key · One-time setup · Synthetic PDF included</text>
+</svg>

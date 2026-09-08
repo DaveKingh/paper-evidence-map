@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use Paper Evidence Map in research or teaching, please cite this repository."
+title: "Paper Evidence Map: an evidence-first workflow for deep-reading research papers"
+type: software
+authors:
+  - name: "Paper Evidence Map contributors"
+version: 0.1.0
+date-released: 2026-09-08
+license: MIT
+repository-code: "https://github.com/YOUR_USERNAME/paper-evidence-map"
+keywords:
+  - research papers
+  - evidence map
+  - prompt engineering
+  - ChatGPT
+  - reproducibility
+
