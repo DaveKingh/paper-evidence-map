@@ -6,6 +6,12 @@ Add either `project-instructions.md` (full feature set) or `project-instructions
 Round 1
 ```
 
+First verify that the source ledger names the paper just uploaded in this chat as S1. If it does not, stop that run and send:
+
+```text
+Use <paper filename>, which I just uploaded in this chat, as S1. Ignore files from other chats and older Project files, then rerun Round 1.
+```
+
 ```text
 Round 2
 ```
@@ -36,4 +42,4 @@ Novelty check. Separate paper-internal claims from external findings and report 
 Compare papers: map each one separately, then compare assumptions, data, metrics, key evidence, and claim boundaries for the same research question.
 ```
 
-If the paper is absent or unreadable, do not ask the model to “try anyway”. Re-upload it, provide OCR, or paste the decisive passages. A correct access-limit response is safer than a plausible evidence map without primary content.
+If the paper is absent, the source ledger selects the wrong file, or the upload is unreadable, do not ask the model to “try anyway”. Use the S1 recovery trigger above first; if access still fails, re-upload it, provide OCR, or paste the decisive passages. A correct access-limit response is safer than a plausible evidence map without primary content. This recovery covers an observed but product-dependent attachment-selection issue; see [`docs/known-issues.md`](../../docs/known-issues.md).

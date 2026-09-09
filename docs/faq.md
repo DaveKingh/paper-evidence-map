@@ -8,6 +8,10 @@ It is optimized for a low-friction ChatGPT Project chat and can be used with Ins
 
 No assumption of complete access is safe. The prompt requires a coverage statement and asks the assistant to disclose inaccessible scans, figures, appendices, or supplements.
 
+## What if it selects an older Project file instead of my new upload?
+
+Stop that run and use the [S1 recovery trigger](../prompts/en/chat-triggers.md), explicitly naming the paper uploaded in the current chat. Do not trust an evidence map whose source ledger names the wrong primary paper. This product-dependent behavior and its manual regression fixture are documented in [Known issues](known-issues.md).
+
 ## Can it prove a paper is correct?
 
 No. It can improve traceability and expose internal gaps. It cannot validate source data, rerun statistics, reproduce experiments, or replace expert review.
@@ -31,4 +35,3 @@ Usually, yes: paste the prompt as persistent/custom instructions where supported
 ## Does the validator grade scientific correctness?
 
 No. It catches missing structural signals and broken repository links. Use the manual rubric and expected findings for content evaluation.
-

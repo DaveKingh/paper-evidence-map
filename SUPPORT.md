@@ -6,4 +6,3 @@
 - Sensitive security or privacy report: follow [SECURITY.md](SECURITY.md); do not post source material publicly.
 
 This is a community project. Response times are not guaranteed.
-

@@ -2,9 +2,9 @@
 
 > **不要只总结论文，要画出它究竟证明了什么。**
 
-[English](README.md) · [快速开始](docs/quickstart.zh-CN.md) · [运行合成论文挑战](#运行可复现挑战) · [证据地图示例](examples/synthetic/expected-output.md) · [方法说明](docs/methodology.zh-CN.md) · [评测方法](docs/evaluation.zh-CN.md)
+[English](README.md) · [快速开始](docs/quickstart.zh-CN.md) · [运行合成论文挑战](#运行可复现挑战) · [证据地图示例](examples/synthetic/expected-output.md) · [方法说明](docs/methodology.zh-CN.md) · [评测方法](docs/evaluation.zh-CN.md) · [已知问题](docs/known-issues.md)
 
-Paper Evidence Map 是一套可复制粘贴、证据优先的 ChatGPT 单篇论文深读工作流。把提示词放进 ChatGPT Project，上传论文，只发送“`第一轮`”；回答必须把重要主张连接到方法、实验、图表、限制与可辩护的结论边界，而不只是生成一份流畅摘要。
+Paper Evidence Map 是一套可复用的 ChatGPT 论文深读提示词与可测试、证据优先的单篇论文工作流。把提示词放进 ChatGPT Project，上传论文，只发送“`第一轮`”；它会要求 ChatGPT 把重要主张连接到方法、实验、图表、限制与可辩护的结论边界，而不只是生成一份流畅摘要。
 
 它面向低门槛的普通 Chat 使用，**在账户提供 Instant 时也可以使用**，但不绑定、也不保证依赖某个模型、模式、套餐或额度规则。
 
@@ -22,16 +22,17 @@ Paper Evidence Map 是一套可复制粘贴、证据优先的 ChatGPT 单篇论�
 | “两个模块都必不可少” | Table 2：移除 C 后 **0.78 → 0.78** | C 的必要性没有得到证明 |
 | “具有广泛鲁棒性” | 只在一个数据集测试一种扰动强度 | 证据只支持该测试条件 |
 
-你可以检查 [可直接上传的 PDF](examples/synthetic/paper.pdf)、[便于审阅的 Markdown 源文](examples/synthetic/paper.md)、应被识别的 [8 个必找项](examples/synthetic/expected-findings.md) 和 [参考证据地图](examples/synthetic/expected-output.md)。这些材料让方法可以被挑战，但**不能证明每次模型运行都会找全问题**。
+你可以检查 [可直接上传的 PDF](examples/synthetic/paper.pdf)、[便于审阅的 Markdown 源文](examples/synthetic/paper.md)、应被识别的 [8 个必找项](examples/synthetic/expected-findings.md)、[参考证据地图](examples/synthetic/expected-output.md) 和对应的 [JSON 参考导出](examples/synthetic/expected-output.json)。这些材料让方法可以被挑战，但**不能证明每次模型运行都会找全问题**。
 
 ## 每个 Project 只设置一次
 
 如果你只想使用工作流，不需要克隆本仓库。
 
-1. 打开 [`prompts/zh-CN/project-instructions.md`](prompts/zh-CN/project-instructions.md)，复制全文；在 ChatGPT 新建一个 Project，例如“论文深度阅读”。
+1. 需要全部功能时选择[完整版提示词](prompts/zh-CN/project-instructions.md)，只需要较短的两轮核心流程时选择[精简版提示词](prompts/zh-CN/project-instructions-compact.md)。完整复制其中一个文件，并在 ChatGPT 新建 Project，例如“论文深度阅读”。
 2. 打开 Project settings，把提示词粘贴到 Project instructions，然后在该 Project 中新建普通 **Chat**。
-3. 上传一篇论文 PDF；有补充材料时一并上传。发送：**`第一轮`**。
-4. 先读“访问限制”和“未知项”，再看结论；发送 **`第二轮`** 复核最关键的主张。
+3. 上传一篇论文 PDF；有补充材料时一并上传。等待附件可用后发送：**`第一轮`**。
+4. 先确认来源清单把本聊天刚上传的论文列为 S1；如果它选中了旧 Project 文件，先使用[恢复指令](prompts/zh-CN/chat-triggers.md)，不要直接相信后续分析。
+5. 先读“访问限制”和“未知项”，再看结论；发送 **`第二轮`** 复核最关键的主张。
 
 ```text
 一次设置 Project → 上传一篇论文 → 第一轮 → 证据地图 → 第二轮 → 有边界的结论
@@ -78,10 +79,12 @@ OpenAI 官方文档说明，Project 会集中管理相关聊天、文件、指�
 
 ```bash
 python scripts/validate.py
-python scripts/validate.py --response path/to/response.md
+python scripts/validate.py --response path/to/response.md --fixture synthetic
 ```
 
-脚本检查仓库完整性与回答结构，不能判断科研解读是否正确。比较 Prompt 版本时，应在相同条件下至少运行三次并公布全部结果，而不是只展示最好的一次。
+脚本检查仓库完整性、回答结构，以及合成案例的 8 项确定性断言；它仍不能判断所有科研解读是否正确。比较 Prompt 版本时，应在相同条件下至少运行三次并公布全部结果，而不是只展示最好的一次。
+
+基础案例通过后，再运行[多文件对抗案例](examples/adversarial/README.md)，检查来源混用和附件内提示注入；运行[访问限制案例](examples/access-limits/README.md)，检查没有证据或只有部分证据时是否拒绝臆测；最后运行[当前聊天附件优先案例](examples/current-chat-precedence/README.md)，检查新上传论文是否优先于旧 Project 文件。
 
 ## 它适合什么，不适合什么
 
@@ -113,7 +116,7 @@ Paper Evidence Map 适合对已经拿到的单篇论文做严谨初审。它刻�
 ```text
 paper-evidence-map/
 ├── prompts/                 # 可直接粘贴的中英文指令
-├── examples/synthetic/      # 可审计输入、答案要点和参考输出
+├── examples/                # 基础、对抗、访问限制和来源优先级夹具
 ├── schemas/                 # 可选的机器可读证据地图格式
 ├── scripts/validate.py      # 零依赖仓库/回答检查
 ├── docs/                    # 快速开始、方法、评测、FAQ 和调研
@@ -122,7 +125,7 @@ paper-evidence-map/
 
 ## 当前成熟度与边界
 
-这是早期工作流与测试框架，不是经过验证的科研测量工具。仓库中的 expected output 是参考材料，不是模型排行榜。只有在记录运行条件并重复测试后，才应发布跨模型或跨学科成绩。
+这是早期工作流与测试框架，不是经过验证的科研测量工具。仓库中的 expected output 是参考材料，不是模型排行榜。只有在记录运行条件并重复测试后，才应发布跨模型或跨学科成绩。请先阅读[已知问题](docs/known-issues.md)，尤其是依赖产品环境的附件选择问题。
 
 除非账户与组织政策允许，否则不要上传机密、未公开、含个人信息、同行评审材料或其他受限制内容。扫描版 PDF、长文档、复杂公式、图表和补充材料可能无法被完整读取。
 

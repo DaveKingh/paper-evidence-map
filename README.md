@@ -2,9 +2,9 @@
 
 > **Don't just summarize a paper. Map what it actually proves.**
 
-[简体中文](README.zh-CN.md) · [Quickstart](docs/quickstart.md) · [Run the synthetic challenge](#try-the-reproducible-challenge) · [Example evidence map](examples/synthetic/expected-output.md) · [Method](docs/methodology.md) · [Evaluation](docs/evaluation.md)
+[简体中文](README.zh-CN.md) · [Quickstart](docs/quickstart.md) · [Run the synthetic challenge](#try-the-reproducible-challenge) · [Example evidence map](examples/synthetic/expected-output.md) · [Method](docs/methodology.md) · [Evaluation](docs/evaluation.md) · [Known issues](docs/known-issues.md)
 
-Paper Evidence Map is a copy-paste, evidence-first workflow for reading one research paper in an ordinary ChatGPT chat. Put the prompt in a ChatGPT Project, upload a paper, and send `Round 1`. The response must connect each major claim to a method, experiment, figure, table, limitation, and defensible boundary—instead of merely producing a fluent summary.
+Paper Evidence Map is a reusable ChatGPT paper-reading prompt plus a testable, evidence-first workflow for one research paper at a time. Put the prompt in a ChatGPT Project, upload a paper, and send `Round 1`. It instructs ChatGPT to connect each major claim to a method, experiment, figure, table, limitation, and defensible boundary—instead of merely producing a fluent summary.
 
 It is designed for low-friction use, including **Instant when that option is available**, but it is not tied to or guaranteed by any particular model, mode, plan, or usage allowance.
 
@@ -22,16 +22,17 @@ The included synthetic paper deliberately makes claims that its own tables do no
 | “Both modules are essential” | Table 2: removing C changes **0.78 → 0.78** | Necessity of C is not demonstrated |
 | “Broadly robust” | One corruption level on one dataset | Evidence supports only that tested condition |
 
-Inspect the [upload-ready PDF](examples/synthetic/paper.pdf), its [reviewable Markdown source](examples/synthetic/paper.md), the [eight required findings](examples/synthetic/expected-findings.md), and a [reference evidence map](examples/synthetic/expected-output.md). These artifacts make the method challengeable; they do **not** prove that every model run will catch every issue.
+Inspect the [upload-ready PDF](examples/synthetic/paper.pdf), its [reviewable Markdown source](examples/synthetic/paper.md), the [eight required findings](examples/synthetic/expected-findings.md), a [reference evidence map](examples/synthetic/expected-output.md), and the matching [reference JSON export](examples/synthetic/expected-output.json). These artifacts make the method challengeable; they do **not** prove that every model run will catch every issue.
 
 ## Setup once per Project
 
 If you only want to use the workflow, you do not need to clone this repository.
 
-1. Open [`prompts/en/project-instructions.md`](prompts/en/project-instructions.md), copy the complete prompt, and create a ChatGPT Project such as **Paper Deep Reading**.
+1. Choose the [full prompt](prompts/en/project-instructions.md) for all features, or the [compact prompt](prompts/en/project-instructions-compact.md) for the shorter Round 1/2 core. Copy one complete file and create a ChatGPT Project such as **Paper Deep Reading**.
 2. Open the Project settings, paste the prompt into Project instructions, then start a new **Chat** in that Project.
-3. Upload one paper PDF and its supplement, if available. Send **`Round 1`**.
-4. Read the access limits and unknowns before the verdict. Send **`Round 2`** to re-check the most consequential claims.
+3. Upload one paper PDF and its supplement, if available. Wait until the attachment is available, then send **`Round 1`**.
+4. Verify that the source ledger names the paper uploaded in this chat as S1. If it selects an older Project file, use the [recovery trigger](prompts/en/chat-triggers.md) before trusting the analysis.
+5. Read the access limits and unknowns before the verdict. Send **`Round 2`** to re-check the most consequential claims.
 
 ```text
 one-time Project setup → upload one paper → Round 1 → evidence map → Round 2 → bounded verdict
@@ -78,10 +79,12 @@ Each important statement is labeled as paper fact, author interpretation, analys
 
 ```bash
 python scripts/validate.py
-python scripts/validate.py --response path/to/response.md
+python scripts/validate.py --response path/to/response.md --fixture synthetic
 ```
 
-The checker validates repository integrity and response structure. It cannot determine whether a scientific interpretation is correct. For prompt comparisons, run the same conditions at least three times and report every run—not only the best one.
+The checker validates repository integrity, response structure, and eight deterministic assertions for this synthetic fixture. It cannot determine whether every scientific interpretation is correct. For prompt comparisons, run the same conditions at least three times and report every run—not only the best one.
+
+After the basic case, use the [adversarial multi-file fixture](examples/adversarial/README.md) to test source mixing and document prompt injection, the [access-limit fixtures](examples/access-limits/README.md) to test refusal under missing or partial evidence, and the [current-chat precedence fixture](examples/current-chat-precedence/README.md) to test whether a new upload outranks older Project files.
 
 ## Where it fits
 
@@ -108,14 +111,14 @@ A locator provides traceability, not truth. Human review remains necessary for d
 | `Export JSON` | Output against the included JSON schema |
 | `Reading status` | Inspected, uninspected, and inaccessible content |
 
-Chinese triggers are in the [Chinese prompt](prompts/zh-CN/project-instructions.md).
+Chinese triggers are in the [full Chinese prompt](prompts/zh-CN/project-instructions.md) and its [compact version](prompts/zh-CN/project-instructions-compact.md).
 
 ## Repository map
 
 ```text
 paper-evidence-map/
 ├── prompts/                 # Paste-ready English and Chinese instructions
-├── examples/synthetic/      # Auditable input, answer key, and reference output
+├── examples/                # Basic, adversarial, access-limit, and source-precedence fixtures
 ├── schemas/                 # Optional machine-readable evidence-map schema
 ├── scripts/validate.py      # Zero-dependency repository/response checks
 ├── docs/                    # Quickstart, method, evaluation, FAQ, and research
@@ -124,7 +127,7 @@ paper-evidence-map/
 
 ## Maturity and limits
 
-This is an early workflow and test harness, not a validated scientific instrument. The included expected output is a reference artifact, not a model leaderboard. Cross-model and cross-discipline baselines should be published only after repeat runs under recorded conditions.
+This is an early workflow and test harness, not a validated scientific instrument. The included expected output is a reference artifact, not a model leaderboard. Cross-model and cross-discipline baselines should be published only after repeat runs under recorded conditions. Read the [known issues](docs/known-issues.md), especially the product-dependent attachment-selection case.
 
 Do not upload confidential, embargoed, personally identifying, peer-review, or otherwise restricted material unless your account and organization policies permit it. Scanned PDFs, long documents, equations, figures, and supplements may be incompletely accessible.
 

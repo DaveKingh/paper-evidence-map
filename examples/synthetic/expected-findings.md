@@ -1,6 +1,6 @@
 # Expected findings for the synthetic paper
 
-This is a content-level answer key, not an exact response template. A good `Round 1` should catch all required findings and preserve their scope.
+This is a content-level answer key, not an exact response template. Use `paper.pdf` for the real attachment test; `paper.md` is its human-reviewable source. A good `Round 1` should catch all required findings and preserve their scope.
 
 ## Required findings
 
@@ -30,4 +30,3 @@ A response should not receive a high score if it:
 - calls the method compute-efficient as a fact;
 - says the paper tested cross-domain transfer;
 - claims to have checked figures or appendices that do not exist.
-

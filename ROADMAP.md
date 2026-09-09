@@ -3,8 +3,8 @@
 ## v0.2 — stronger evaluation
 
 - Add at least three synthetic fixtures covering statistics, causal claims, and benchmark leakage.
-- Publish a machine-readable expected-findings format.
 - Measure inter-rater agreement for the manual rubric.
+- Add JSON outputs and deterministic content assertions for every accepted fixture.
 
 ## v0.3 — discipline packs
 
@@ -22,4 +22,3 @@
 - Ranking paper quality with a single opaque score.
 - Uploading or redistributing papers without clear permission.
 - Adding dependencies merely to make a simple workflow look like an application.
-

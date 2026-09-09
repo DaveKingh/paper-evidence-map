@@ -1,0 +1,185 @@
+{
+  "paper": {
+    "title": "TinyRank: Compact Document Classification with Dual Routing",
+    "authors": [],
+    "year": null,
+    "identifier": null
+  },
+  "coverage": {
+    "inspected": [
+      "S1 paper.pdf: Abstract and Sections 1–8",
+      "S1 paper.pdf: Table 1 and Table 2"
+    ],
+    "uninspected": [],
+    "inaccessible": [],
+    "claimed_full_read": true
+  },
+  "research_question": "Whether combining a global router and local context gate improves document classification without high computational cost.",
+  "method_chain": [
+    "document input",
+    "frozen 12-layer encoder",
+    "global router G and token gate C",
+    "addition of module outputs",
+    "linear classifier",
+    "10-epoch Adam training",
+    "test macro-F1 evaluation"
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "TinyRank improves macro-F1 by 8 percentage points over StrongBase on both datasets.",
+      "type": "author_interpretation",
+      "evidence": [
+        {
+          "locator": "S1, Table 1",
+          "observation": "Dataset A is 0.78 versus 0.70, an 0.08 difference; Dataset B is 0.78 versus 0.74, an 0.04 difference."
+        }
+      ],
+      "support": "weak",
+      "boundary": "The reported single run shows an 8-point gain on Dataset A and a 4-point gain on Dataset B, not 8 points on both.",
+      "risks": [
+        "Headline arithmetic is wrong for Dataset B.",
+        "Only one run per model is reported."
+      ]
+    },
+    {
+      "id": "C2",
+      "claim": "Both G and C are essential to TinyRank's gain.",
+      "type": "author_interpretation",
+      "evidence": [
+        {
+          "locator": "S1, Table 2",
+          "observation": "Full TinyRank and the variant without C both report 0.78 macro-F1; removing G reports 0.76."
+        }
+      ],
+      "support": "weak",
+      "boundary": "The one-run Dataset A ablation shows a 2-point decrease without G but no observed decrease without C; necessity of C is not demonstrated.",
+      "risks": [
+        "The prose directly contradicts the table for C.",
+        "Ablation is limited to Dataset A and one run."
+      ]
+    },
+    {
+      "id": "C3",
+      "claim": "TinyRank generalizes across domains.",
+      "type": "author_interpretation",
+      "evidence": [
+        {
+          "locator": "S1, Section 4 and Table 1",
+          "observation": "The paper reports separate within-dataset results on one technical-support dataset and one product-review dataset."
+        }
+      ],
+      "support": "weak",
+      "boundary": "TinyRank outperforms the selected baselines in one reported run within each of two datasets; cross-domain transfer is not tested.",
+      "risks": [
+        "The datasets are small.",
+        "No cross-domain train-test transfer is reported.",
+        "No uncertainty or repeated runs are reported."
+      ]
+    },
+    {
+      "id": "C4",
+      "claim": "TinyRank is broadly robust to noisy real-world text.",
+      "type": "author_interpretation",
+      "evidence": [
+        {
+          "locator": "S1, Section 6",
+          "observation": "With 10% random token deletion on Dataset A, TinyRank reports 0.71 macro-F1 and StrongBase 0.65."
+        }
+      ],
+      "support": "weak",
+      "boundary": "The reported run supports better performance than StrongBase under one synthetic corruption level on Dataset A only.",
+      "risks": [
+        "Only one corruption type, level, dataset, and run are evaluated."
+      ]
+    },
+    {
+      "id": "C5",
+      "claim": "TinyRank is compute-efficient.",
+      "type": "author_interpretation",
+      "evidence": [
+        {
+          "locator": "S1, Section 7",
+          "observation": "The only compute information is that training completed on a single unspecified GPU."
+        }
+      ],
+      "support": "cannot_judge",
+      "boundary": "No compute-efficiency conclusion is defensible without hardware, time, memory, parameter, energy, or compute-matched comparison data.",
+      "risks": [
+        "Decisive efficiency measurements are not specified in the paper."
+      ]
+    },
+    {
+      "id": "C6",
+      "claim": "TinyRank exceeds StrongBase in the reported main-result runs.",
+      "type": "paper_fact",
+      "evidence": [
+        {
+          "locator": "S1, Table 1",
+          "observation": "TinyRank reports 0.78 versus 0.70 on Dataset A and 0.78 versus 0.74 on Dataset B."
+        }
+      ],
+      "support": "moderate",
+      "boundary": "This describes the displayed single-run results only and does not establish stability or unbiased generalization.",
+      "risks": [
+        "The best checkpoint is selected using test macro-F1.",
+        "No repeated-run uncertainty or statistical test is reported."
+      ]
+    }
+  ],
+  "consistency_issues": [
+    {
+      "severity": "high",
+      "locations": [
+        "S1, Abstract",
+        "S1, Section 1",
+        "S1, Section 4",
+        "S1, Table 1",
+        "S1, Section 8"
+      ],
+      "description": "The prose claims an 8-point gain on both datasets, but Table 1 shows only a 4-point gain on Dataset B.",
+      "impact": "A headline quantitative contribution is false for one of two datasets."
+    },
+    {
+      "severity": "high",
+      "locations": [
+        "S1, Section 5",
+        "S1, Table 2"
+      ],
+      "description": "The prose says removing either module damages performance, while the without-C row equals the full model at 0.78.",
+      "impact": "The only ablation directly contradicts necessity of C."
+    },
+    {
+      "severity": "medium",
+      "locations": [
+        "S1, Section 3"
+      ],
+      "description": "The checkpoint is selected using the test metric and no validation procedure is reported.",
+      "impact": "Reported test performance may be optimistically selected."
+    }
+  ],
+  "unknowns": [
+    {
+      "category": "not_specified",
+      "item": "Random seed, batch size, validation procedure, stopping rule, encoder identity, exact split counts, baseline tuning details, statistical tests, and detailed compute measurements.",
+      "impact": "Reproducibility, uncertainty, leakage risk, and efficiency cannot be fully assessed."
+    },
+    {
+      "category": "external_source_needed",
+      "item": "Field-wide novelty of the dual-routing architecture.",
+      "impact": "External novelty remains not checked."
+    },
+    {
+      "category": "replication_needed",
+      "item": "Stability of the reported gains and the contribution of Module C across datasets and seeds.",
+      "impact": "Single-run internal evidence cannot establish stability or module necessity."
+    }
+  ],
+  "next_checks": [
+    "Recalculate every headline gain from Table 1 and reconcile the Dataset B discrepancy.",
+    "Recheck Table 2 and repeat the C ablation across seeds and Dataset B.",
+    "Use a validation set or nested model-selection procedure instead of selecting on test macro-F1.",
+    "Test cross-domain transfer rather than separate within-dataset performance.",
+    "Measure compute against a matched baseline with specified hardware and resource metrics."
+  ]
+}
