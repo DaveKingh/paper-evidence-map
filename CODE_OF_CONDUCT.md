@@ -17,4 +17,3 @@ Harassment, discrimination, threats, doxxing, plagiarism, fabricated evidence, o
 ## Reporting
 
 Until a private maintainer contact is configured, do not include sensitive details in a public issue. Contact the repository owner through their GitHub profile. Maintainers may edit or remove content and restrict participation when necessary to protect the community.
-

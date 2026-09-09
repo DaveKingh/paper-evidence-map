@@ -20,7 +20,7 @@ body:
     id: evaluation
     attributes:
       label: Before/after evaluation
-      description: Include model/mode, date, number of runs, all rubric scores, locator errors, and regressions.
+      description: Include repository versions, model/mode, date, number of runs, all rubric scores, required-finding hits, locator errors, and regressions.
     validations:
       required: true
   - type: checkboxes
@@ -29,4 +29,5 @@ body:
       label: Contribution
       options:
         - label: I can add or update a synthetic fixture for this behavior.
-
+        - label: I understand the automated structural score does not establish scientific correctness.
+          required: true

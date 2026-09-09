@@ -63,4 +63,3 @@ Training completed on a single GPU. We do not report the GPU model, wall-clock t
 ## 8. Conclusion
 
 TinyRank delivers consistent 8-point gains across domains. Its two essential modules provide robust and compute-efficient document classification. Future work will evaluate more languages and larger datasets.
-

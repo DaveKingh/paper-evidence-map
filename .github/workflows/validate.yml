@@ -9,14 +9,48 @@ permissions:
 
 jobs:
   repository:
+    # Keep this check name stable: main branch protection already requires it.
+    name: repository
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Validate repository and reference response
-        run: |
+          python-version: "3.13"
+      - name: Run validator regression tests
+        run: python -m unittest discover -s scripts/tests -v
+      - name: Check distributed synthetic PDF
+        run: python scripts/build_fixture_pdf.py --check
+      - name: Validate repository
+        run: python scripts/validate.py
+      - name: Validate reference Markdown against structure and fixture assertions
+        run: >-
           python scripts/validate.py
-          python scripts/validate.py --response examples/synthetic/expected-output.md
+          --response examples/synthetic/expected-output.md
+          --fixture synthetic
+      - name: Validate reference JSON against schema and fixture assertions
+        run: >-
+          python scripts/validate.py
+          --json examples/synthetic/expected-output.json
+          --fixture synthetic
 
+  python-39-compatibility:
+    name: Python 3.9 compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Run validator regression tests
+        run: python -m unittest discover -s scripts/tests -v
+      - name: Check distributed synthetic PDF
+        run: python scripts/build_fixture_pdf.py --check
+      - name: Validate repository
+        run: python scripts/validate.py

@@ -1,93 +1,170 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/DaveKingh/paper-evidence-map/schemas/evidence-map.schema.json",
+  "$id": "urn:paper-evidence-map:schema:evidence-map:1.0",
   "title": "Paper Evidence Map",
+  "description": "Machine-readable export contract for one paper evidence map.",
   "type": "object",
-  "required": ["paper", "coverage", "claims", "unknowns"],
+  "required": [
+    "paper",
+    "coverage",
+    "research_question",
+    "method_chain",
+    "claims",
+    "consistency_issues",
+    "unknowns",
+    "next_checks"
+  ],
   "properties": {
     "paper": {
       "type": "object",
-      "required": ["title"],
+      "required": ["title", "authors", "year", "identifier"],
       "properties": {
-        "title": {"type": ["string", "null"]},
-        "authors": {"type": "array", "items": {"type": "string"}},
-        "year": {"type": ["integer", "null"]},
-        "identifier": {"type": ["string", "null"]}
+        "title": {"type": ["string", "null"], "minLength": 1},
+        "authors": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "year": {"type": ["integer", "null"], "minimum": 1000, "maximum": 3000},
+        "identifier": {"type": ["string", "null"], "minLength": 1}
       },
       "additionalProperties": false
     },
     "coverage": {
       "type": "object",
-      "required": ["inspected", "inaccessible"],
+      "required": ["inspected", "uninspected", "inaccessible", "claimed_full_read"],
       "properties": {
-        "inspected": {"type": "array", "items": {"type": "string"}},
-        "inaccessible": {"type": "array", "items": {"type": "string"}},
+        "inspected": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "uninspected": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "inaccessible": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
         "claimed_full_read": {"type": "boolean"}
       },
       "additionalProperties": false
     },
-    "research_question": {"type": ["string", "null"]},
-    "method_chain": {"type": "array", "items": {"type": "string"}},
+    "research_question": {"type": ["string", "null"], "minLength": 1},
+    "method_chain": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
     "claims": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "required": ["id", "claim", "type", "evidence", "support", "boundary"],
         "properties": {
-          "id": {"type": "string"},
-          "claim": {"type": "string"},
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+          },
+          "claim": {"type": "string", "minLength": 1},
           "type": {
             "enum": ["paper_fact", "author_interpretation", "analyst_judgment", "unknown"]
           },
           "evidence": {
             "type": "array",
+            "uniqueItems": true,
             "items": {
               "type": "object",
               "required": ["locator", "observation"],
               "properties": {
-                "locator": {"type": ["string", "null"]},
-                "observation": {"type": "string"}
+                "locator": {"type": ["string", "null"], "minLength": 1},
+                "observation": {"type": "string", "minLength": 1}
               },
               "additionalProperties": false
             }
           },
           "support": {"enum": ["strong", "moderate", "weak", "cannot_judge"]},
-          "boundary": {"type": "string"},
-          "risks": {"type": "array", "items": {"type": "string"}}
+          "boundary": {"type": "string", "minLength": 1},
+          "risks": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "support": {"enum": ["strong", "moderate"]}
+              }
+            },
+            "then": {
+              "properties": {
+                "evidence": {
+                  "minItems": 1,
+                  "contains": {
+                    "type": "object",
+                    "properties": {
+                      "locator": {"type": "string", "minLength": 1}
+                    },
+                    "required": ["locator"]
+                  },
+                  "minContains": 1
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "consistency_issues": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "required": ["severity", "locations", "description", "impact"],
         "properties": {
           "severity": {"enum": ["high", "medium", "low"]},
-          "locations": {"type": "array", "items": {"type": "string"}},
-          "description": {"type": "string"},
-          "impact": {"type": "string"}
+          "locations": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "description": {"type": "string", "minLength": 1},
+          "impact": {"type": "string", "minLength": 1}
         },
         "additionalProperties": false
       }
     },
     "unknowns": {
       "type": "array",
+      "uniqueItems": true,
       "items": {
         "type": "object",
-        "required": ["category", "item"],
+        "required": ["category", "item", "impact"],
         "properties": {
-          "category": {"enum": ["not_specified", "inaccessible", "external_source_needed", "replication_needed"]},
-          "item": {"type": "string"},
-          "impact": {"type": ["string", "null"]}
+          "category": {
+            "enum": ["not_specified", "inaccessible", "external_source_needed", "replication_needed"]
+          },
+          "item": {"type": "string", "minLength": 1},
+          "impact": {"type": ["string", "null"], "minLength": 1}
         },
         "additionalProperties": false
       }
     },
-    "next_checks": {"type": "array", "items": {"type": "string"}}
+    "next_checks": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
   },
   "additionalProperties": false
 }
-
-

@@ -31,4 +31,17 @@ body:
       label: Expected findings and locations
     validations:
       required: true
-
+  - type: textarea
+    id: machine_readable
+    attributes:
+      label: Machine-readable export plan
+      description: Explain how expected-output.json will cover the same findings and validate against the Schema.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety and rights
+      options:
+        - label: I will not include confidential, identifying, restricted, or non-redistributable content.
+          required: true

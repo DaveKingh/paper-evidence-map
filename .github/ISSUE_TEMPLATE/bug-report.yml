@@ -10,14 +10,29 @@ body:
     id: version
     attributes:
       label: Repository version or commit
-      placeholder: v0.1.0 or commit hash
+      placeholder: v0.1.1 or commit hash
     validations:
       required: true
   - type: input
     id: environment
     attributes:
-      label: Product, model/mode, and date
-      placeholder: ChatGPT, displayed mode/model, YYYY-MM-DD
+      label: Environment
+      description: For prompt behavior, give product, displayed model/mode, and date. For local tools, give OS and Python version.
+      placeholder: ChatGPT, displayed mode/model, YYYY-MM-DD; or Windows 11, Python 3.13
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Prompt behavior
+        - Markdown structural check
+        - Synthetic fixture assertions
+        - JSON Schema or export validation
+        - PDF fixture
+        - Documentation or links
+        - GitHub Actions or templates
     validations:
       required: true
   - type: textarea
@@ -39,6 +54,12 @@ body:
       label: Expected behavior and evidence
     validations:
       required: true
+  - type: textarea
+    id: validator_output
+    attributes:
+      label: Validator output
+      description: Paste relevant non-sensitive output and state the exact command. The structural score and fixture assertions are different checks.
+      render: shell
   - type: checkboxes
     id: privacy
     attributes:
@@ -46,4 +67,3 @@ body:
       options:
         - label: I removed confidential, identifying, restricted, and non-redistributable content.
           required: true
-
