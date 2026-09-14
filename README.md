@@ -1,16 +1,142 @@
 # Paper Evidence Map
 
-> **Don't just summarize a paper. Map what it actually proves.**
+> **Don't just summarize a paper. Read what matters, then map what it actually proves.**
 
-[简体中文](README.zh-CN.md) · [Quickstart](docs/quickstart.md) · [Run the synthetic challenge](#try-the-reproducible-challenge) · [Example evidence map](examples/synthetic/expected-output.md) · [Method](docs/methodology.md) · [Evaluation](docs/evaluation.md) · [Known issues](docs/known-issues.md)
+[简体中文](README.zh-CN.md) · [Adaptive reading](docs/adaptive-reading.md) · [Quickstart](docs/quickstart.md) · [Synthetic challenge](#try-the-reproducible-challenge) · [Method](docs/methodology.md) · [Evaluation](docs/evaluation.md)
 
-Paper Evidence Map is a reusable ChatGPT paper-reading prompt plus a testable, evidence-first workflow for one research paper at a time. Put the prompt in a ChatGPT Project, upload a paper, and send `Round 1`. It instructs ChatGPT to connect each major claim to a method, experiment, figure, table, limitation, and defensible boundary—instead of merely producing a fluent summary.
+Paper Evidence Map (PEM) is an adaptive, evidence-first workflow for reading one research paper at a time. It does **not** assume that every paper deserves a full deep read. It first infers what you need from the paper, chooses the minimum useful reading depth, and then connects important claims to methods, experiments, figures, tables, limitations, and defensible boundaries.
 
-It is designed for low-friction use, including **Instant when that option is available**, but it is not tied to or guaranteed by any particular model, mode, plan, or usage allowance.
+The core idea is simple:
 
-**What you need:** a ChatGPT account with file upload access. Projects are recommended but optional. The primary workflow needs **no separate API key and no package install**; the optional local checker requires Python 3.9+.
+```text
+user goal
+   ↓
+reading depth
+   ↓
+relevant paper evidence
+   ↓
+claim → evidence → defensible boundary
+   ↓
+optional gap / idea formation
+```
 
-![Paper Evidence Map demo](assets/demo.svg)
+PEM is designed for ordinary ChatGPT use, including Projects. It is model-neutral in design and does not require an API key for the primary workflow.
+
+## Why adaptive reading
+
+A researcher often starts with questions like:
+
+- Is this paper worth reading for my current problem?
+- Which section matters most to me?
+- I only want to understand this module—how does it work?
+- Does this table really support the author's claim?
+- Is there a research idea hidden in this design choice?
+- I need to present this paper tomorrow—what should I focus on?
+
+A fixed full-paper template creates unnecessary work and output. PEM instead uses five reading depths:
+
+| Depth | Use |
+|---|---|
+| **Scan** | What is this paper about? |
+| **Triage** | Is it relevant / worth reading / useful for ideas? |
+| **Targeted** | Answer one method, experiment, figure, table, or claim question |
+| **Deep** | Build a broad evidence map |
+| **Audit** | Skeptically re-check consequential claims |
+
+**Triage is the default**, not Deep.
+
+## Three core rules
+
+1. **No user need → no analysis.**
+2. **No evidence → no strong claim.**
+3. **No verified gap → no strong research idea.**
+
+This means PEM should stop when the current question is answered instead of automatically generating every possible section.
+
+## Setup once per Project
+
+If you only want to use the workflow, you do not need to clone this repository.
+
+1. Copy the [full English Project instructions](prompts/en/project-instructions.md) or the [Chinese version](prompts/zh-CN/project-instructions.md).
+2. Paste them into a ChatGPT Project's instructions.
+3. Upload a paper and ask your actual question naturally.
+
+Examples:
+
+```text
+Is this paper worth reading for my current research direction?
+```
+
+```text
+I mainly care about scenario mining. Which parts of this paper should I read first?
+```
+
+```text
+Why did the authors fine-tune BLIP2 instead of the strongest zero-shot model?
+```
+
+```text
+Does Table 4 really support the paper's robustness claim?
+```
+
+```text
+Can this paper give me any candidate research ideas?
+```
+
+You no longer need to start every paper with `Round 1`.
+
+Legacy shortcuts still work:
+
+| Send | Result |
+|---|---|
+| `Round 1` / `第一轮` | Deep evidence map |
+| `Round 2` / `第二轮` | Skeptical audit |
+| `Focus: <question>` | Targeted reading |
+| `Reading status` | Coverage only |
+| `Export JSON` | Structured evidence-map export |
+
+## What PEM preserves from the original workflow
+
+Adaptive routing changes **when** analysis is performed, not the evidence standard.
+
+PEM still requires:
+
+- source and access provenance;
+- paper fact / author interpretation / analyst judgment / unknown separation;
+- precise evidence locators where possible;
+- claim-local support strength;
+- explicit unknowns and inaccessible content;
+- claim boundary control;
+- counterevidence and alternative explanations in audit mode;
+- no field-wide novelty claim from one paper alone.
+
+The core scientific object remains:
+
+```text
+Claim → Evidence → Boundary
+```
+
+See [Methodology](docs/methodology.md).
+
+## Candidate gaps and research ideas
+
+PEM may surface interesting anomalies before a full audit, but it does not automatically call them research gaps.
+
+```text
+observation
+  ↓
+Candidate Gap
+  ↓
+targeted evidence check
+  ↓
+Candidate Idea
+  ↓
+novelty / feasibility checks when needed
+  ↓
+Research Idea
+```
+
+A missing experiment alone is **not** automatically a publishable gap.
 
 ## See the difference on a checkable example
 
@@ -22,127 +148,93 @@ The included synthetic paper deliberately makes claims that its own tables do no
 | “Both modules are essential” | Table 2: removing C changes **0.78 → 0.78** | Necessity of C is not demonstrated |
 | “Broadly robust” | One corruption level on one dataset | Evidence supports only that tested condition |
 
-Inspect the [upload-ready PDF](examples/synthetic/paper.pdf), its [reviewable Markdown source](examples/synthetic/paper.md), the [eight required findings](examples/synthetic/expected-findings.md), a [reference evidence map](examples/synthetic/expected-output.md), and the matching [reference JSON export](examples/synthetic/expected-output.json). These artifacts make the method challengeable; they do **not** prove that every model run will catch every issue.
-
-## Setup once per Project
-
-If you only want to use the workflow, you do not need to clone this repository.
-
-1. Choose the [full prompt](prompts/en/project-instructions.md) for all features, or the [compact prompt](prompts/en/project-instructions-compact.md) for the shorter Round 1/2 core. Copy one complete file and create a ChatGPT Project such as **Paper Deep Reading**.
-2. Open the Project settings, paste the prompt into Project instructions, then start a new **Chat** in that Project.
-3. Upload one paper PDF and its supplement, if available. Wait until the attachment is available, then send **`Round 1`**.
-4. Verify that the source ledger names the paper uploaded in this chat as S1. If it selects an older Project file, use the [recovery trigger](prompts/en/chat-triggers.md) before trusting the analysis.
-5. Read the access limits and unknowns before the verdict. Send **`Round 2`** to re-check the most consequential claims.
-
-```text
-one-time Project setup → upload one paper → Round 1 → evidence map → Round 2 → bounded verdict
-```
-
-Without Projects, paste the complete prompt into a normal chat before uploading the paper. You will need to paste it again in each new chat.
-
-OpenAI's documentation says Projects keep related chats, files, instructions, and sources together, and that one Project can contain chats started with either Chat or ChatGPT Work. This repository recommends ordinary Chat; it does not require Work, Codex, or the API. See [Projects and chats](https://learn.chatgpt.com/docs/projects). Interface labels, file limits, model availability, and usage rules can vary by account and change over time.
-
-## What the workflow produces
-
-```text
-paper + supplement
-        │
-        ▼
-Round 1: evidence map
-question → method → experiments → claim/evidence/boundary matrix
-        │
-        ▼
-Round 2: skeptical audit
-re-open primary evidence → seek counterevidence → narrow conclusions
-        │
-        ├── Markdown research note
-        └── optional JSON evidence map
-```
-
-The default output includes:
-
-- reading coverage and inaccessible material;
-- an end-to-end method and module map;
-- an experiment inventory, including consequential omissions;
-- a claim → evidence → support → boundary matrix;
-- contradictions across abstract, prose, tables, figures, and appendices;
-- an uncertainty register and prioritized next checks.
-
-Each important statement is labeled as paper fact, author interpretation, analyst judgment, or unknown. Every major conclusion needs a real locator—or an explicit statement that it could not be located.
+Inspect the [upload-ready PDF](examples/synthetic/paper.pdf), [Markdown source](examples/synthetic/paper.md), [expected findings](examples/synthetic/expected-findings.md), [reference evidence map](examples/synthetic/expected-output.md), and [reference JSON](examples/synthetic/expected-output.json).
 
 ## Try the reproducible challenge
 
-1. Do **not** read the answer key yet. Upload [`examples/synthetic/paper.pdf`](examples/synthetic/paper.pdf) and send `Round 1`. Use [`paper.md`](examples/synthetic/paper.md) only when you want to audit the fixture source.
-2. Compare the result with the [required findings](examples/synthetic/expected-findings.md).
-3. Score evidence fidelity with the [100-point manual rubric](docs/evaluation.md).
-4. Optionally save the response as Markdown and run the structural smoke test:
+### Evidence fidelity test
 
-```bash
-python scripts/validate.py
-python scripts/validate.py --response path/to/response.md --fixture synthetic
+Upload [`examples/synthetic/paper.pdf`](examples/synthetic/paper.pdf) and send:
+
+```text
+Round 1
 ```
 
-The checker validates repository integrity, response structure, and eight deterministic assertions for this synthetic fixture. It cannot determine whether every scientific interpretation is correct. For prompt comparisons, run the same conditions at least three times and report every run—not only the best one.
+Then compare the result against the [required findings](examples/synthetic/expected-findings.md) and [evaluation rubric](docs/evaluation.md).
 
-After the basic case, use the [adversarial multi-file fixture](examples/adversarial/README.md) to test source mixing and document prompt injection, the [access-limit fixtures](examples/access-limits/README.md) to test refusal under missing or partial evidence, and the [current-chat precedence fixture](examples/current-chat-precedence/README.md) to test whether a new upload outranks older Project files.
+### Adaptive routing tests
+
+Use a fresh chat for each question with the same synthetic paper:
+
+```text
+Is this paper worth reading if I mainly care about robust classification?
+```
+
+Expected: **Triage**, not a full evidence map.
+
+```text
+Explain whether Module C is actually necessary.
+```
+
+Expected: **Targeted + Evidence/Critical**, focused on the relevant ablation.
+
+```text
+Can this paper give me a research idea?
+```
+
+Expected: candidate gap/idea language, not an unqualified novelty claim.
+
+The point of PEM v0.2 is therefore testable: it should not only read carefully; it should also choose **how much reading is appropriate**.
+
+## Architecture
+
+PEM v0.2 uses a thin, manifest-driven skill structure inspired by progressive-loading systems:
+
+```text
+SKILL.md
+  ↓
+manifest.yaml
+  ├── always-load core
+  ├── goal router
+  ├── depth router
+  ├── on-demand lenses
+  └── on-demand references
+```
+
+See [design reference audit](docs/design-reference-audit.md) for what PEM borrows from Nature Skills and Academic Research Suite, and what it intentionally keeps different.
 
 ## Where it fits
 
-Use Paper Evidence Map when you need a careful first-pass audit of a paper you already have. It is deliberately smaller than a research platform:
-
 | Need | Fit |
 |---|---|
-| Audit one paper's claims against its internal evidence | **Yes—core use case** |
-| Create repeatable reading notes without writing code | **Yes** |
-| Search and rank an entire literature | No; use a literature-search or RAG tool |
-| Establish field-wide novelty | No; requires external literature review |
-| Verify statistics, rerun code, or replicate experiments | No; use statistical review and reproduction workflows |
-| Reliably OCR complex scans or inspect every visual detail | Not guaranteed; disclose inaccessible content |
+| Decide whether one paper is worth reading | **Yes—core use case** |
+| Understand one method/module/result | **Yes—core use case** |
+| Audit one paper's claims against its evidence | **Yes—core use case** |
+| Find traceable candidate gaps / ideas | **Yes, with explicit uncertainty** |
+| Search and rank an entire literature | No |
+| Establish field-wide novelty from one paper | No |
+| Replace replication or peer review | No |
 
-A locator provides traceability, not truth. Human review remains necessary for decisions with scientific, clinical, legal, or financial consequences.
-
-## Triggers
-
-| Send | Result |
-|---|---|
-| `Round 1` | Full evidence map |
-| `Round 2` | Skeptical re-check of consequential claims |
-| `Focus: <question>` | Evidence map scoped to one decision or question |
-| `Export JSON` | Output against the included JSON schema |
-| `Reading status` | Inspected, uninspected, and inaccessible content |
-
-Chinese triggers are in the [full Chinese prompt](prompts/zh-CN/project-instructions.md) and its [compact version](prompts/zh-CN/project-instructions-compact.md).
+A locator provides traceability, not truth. Human review remains necessary for consequential scientific decisions.
 
 ## Repository map
 
 ```text
 paper-evidence-map/
-├── prompts/                 # Paste-ready English and Chinese instructions
-├── examples/                # Basic, adversarial, access-limit, and source-precedence fixtures
-├── schemas/                 # Optional machine-readable evidence-map schema
-├── scripts/validate.py      # Zero-dependency repository/response checks
-├── docs/                    # Quickstart, method, evaluation, FAQ, and research
-└── .github/                 # CI, issue forms, and pull-request template
+├── SKILL.md
+├── manifest.yaml
+├── static/core/             # always-loaded principles, source gate, output contract
+├── router/                  # goal and depth routing
+├── lenses/                  # composable analysis capabilities
+├── prompts/                 # paste-ready English and Chinese Project instructions
+├── examples/                # synthetic/adversarial/access fixtures
+├── schemas/                 # machine-readable evidence-map schema
+├── scripts/validate.py      # deterministic repository/response checks
+└── docs/                    # methodology, adaptive model, evaluation, design notes
 ```
 
-## Maturity and limits
+## Maturity
 
-This is an early workflow and test harness, not a validated scientific instrument. The included expected output is a reference artifact, not a model leaderboard. Cross-model and cross-discipline baselines should be published only after repeat runs under recorded conditions. Read the [known issues](docs/known-issues.md), especially the product-dependent attachment-selection case.
+PEM remains an early workflow and test harness, not a validated scientific instrument. Structural validation is not the same as semantic reading accuracy. Prompt revisions should be compared with repeated live runs under recorded conditions.
 
-Do not upload confidential, embargoed, personally identifying, peer-review, or otherwise restricted material unless your account and organization policies permit it. Scanned PDFs, long documents, equations, figures, and supplements may be incompletely accessible.
-
-## Contribute a harder test
-
-The most useful contribution is a small failure case that others can reproduce:
-
-- **Quick:** run the synthetic challenge and report a missed or fabricated finding.
-- **High leverage:** contribute an original adversarial mini-paper plus expected findings.
-- **Prompt change:** include before/after scores from at least three comparable runs and disclose regressions.
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md), run `python scripts/validate.py`, and keep each pull request focused. See the [roadmap](ROADMAP.md) for work in scope.
-
-## License and citation
-
-MIT licensed; see [LICENSE](LICENSE). If the workflow materially supports published research or teaching, use [CITATION.cff](CITATION.cff).
-
-**Run the synthetic challenge first. If it catches something your usual summary missed, star the repository. If it fails, open an issue—the failure is more valuable than applause.**
+MIT licensed; see [LICENSE](LICENSE).
