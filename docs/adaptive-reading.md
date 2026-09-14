@@ -58,6 +58,23 @@ paper + user goal
 
 The default for an unspecified paper-reading request is **Triage**, not Deep.
 
+## Lenses are capabilities, not commands
+
+The router may activate only the capabilities relevant to the current question:
+
+- Relevance
+- Contribution
+- Method
+- Experiment
+- Evidence
+- Critical
+- Gap
+- Idea
+- Learning
+- Presentation
+
+Users should not need to know these names. Natural-language goals are the primary interface.
+
 ## Candidate gaps and ideas
 
 Interesting observations may appear before a full paper audit. The workflow may therefore surface a **Candidate Gap** or **Candidate Idea** early, but must not present it as a validated research opportunity.
@@ -82,7 +99,7 @@ Round 1 and Round 2 remain available for reproducibility and backward compatibil
 - Round 1 maps to a Deep evidence-map pass.
 - Round 2 maps to an Audit pass over consequential claims.
 
-They are now optional tools rather than the required entrance to every reading session.
+They are optional tools rather than the required entrance to every reading session.
 
 ## Three design rules
 
@@ -91,3 +108,24 @@ They are now optional tools rather than the required entrance to every reading s
 3. **No verified gap -> no strong research idea.**
 
 The first rule controls scope, the second controls scientific support, and the third controls idea quality.
+
+## Test the router, not just the evidence map
+
+Adaptive reading adds failure modes that v0.1 could not measure:
+
+- `OVERREAD`
+- `UNDERREAD`
+- `MISROUTE`
+- `NO_STOP`
+- `EVIDENCE_BYPASS`
+- `IDEA_OVERPROMOTION`
+
+Use [`examples/adaptive-routing/`](../examples/adaptive-routing/README.md) and [`docs/evaluation-adaptive.md`](evaluation-adaptive.md) for live routing tests.
+
+The fixture contract itself can be checked with:
+
+```bash
+python scripts/check_adaptive_routes.py
+```
+
+That deterministic script checks only that the evaluation matrix is well formed. It does not claim to judge semantic routing quality automatically.
