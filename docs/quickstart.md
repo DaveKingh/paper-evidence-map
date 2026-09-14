@@ -2,97 +2,84 @@
 
 ## Use it in ChatGPT (recommended)
 
-1. Open the [full Project instructions](../prompts/en/project-instructions.md).
+1. Open the [full adaptive prompt](../prompts/en/project-instructions.md), or use the [compact adaptive prompt](../prompts/en/project-instructions-compact.md) when you want fewer persistent instructions.
 2. Create a ChatGPT Project such as **Paper Evidence Map**.
-3. Paste the complete prompt into Project instructions.
-4. Start one chat per paper and upload the paper plus clearly linked supplements.
+3. Open Project settings and paste the complete prompt into Project instructions.
+4. Start one chat per paper. Upload the primary paper and any clearly linked supplement.
 5. Ask your real question directly. You do **not** need to start with `Round 1`.
 
 Examples:
 
 ```text
-Is this paper worth reading for my current research direction?
+What is this paper about?
+Is it worth reading for my research direction?
+Explain Section 3.2 and the role of Module C.
+Does Table 4 really support the robustness claim?
+Can this paper give me a research idea?
+I need to present this tomorrow — what should I focus on?
 ```
+
+The workflow will infer the minimum useful depth:
 
 ```text
-I only care about the retrieval module. Explain how it works and what evidence supports it.
+Scan → Triage → Targeted → Deep → Audit
 ```
+
+It stops once the current goal is satisfied unless more evidence is necessary.
+
+## Legacy commands still work
 
 ```text
-Does Table 4 really justify the robustness claim?
+Round 1  → Deep evidence-map pass
+Round 2  → Audit the consequential claims
+Focus: X → Targeted reading
 ```
 
-```text
-Can this paper give me a candidate research idea?
-```
+Use these when you deliberately want a known reproducible path rather than automatic routing.
 
-PEM should choose the minimum useful depth automatically:
+## Verify with the included evidence fixture
 
-```text
-Scan -> Triage -> Targeted -> Deep -> Audit
-```
-
-It should escalate only when a deeper read is necessary for a reliable answer.
-
-## Legacy shortcuts
-
-The original workflow remains available:
-
-- `Round 1` -> Deep evidence map.
-- `Round 2` -> skeptical audit of consequential claims.
-- `Focus: <question>` -> targeted reading.
-- `Reading status` -> coverage only.
-- `Export JSON` -> schema-oriented structured output.
-
-If a source ledger selects an older Project file instead of the current-chat paper, use the [S1 recovery trigger](../prompts/en/chat-triggers.md).
-
-## Verify evidence fidelity
+To test the Deep evidence-map path:
 
 1. Upload [`examples/synthetic/paper.pdf`](../examples/synthetic/paper.pdf).
 2. Send `Round 1`.
-3. Compare with [`expected-findings.md`](../examples/synthetic/expected-findings.md).
-4. Score it with [evaluation.md](evaluation.md).
-5. Optionally save the response locally and run:
+3. Compare the response with [`expected-findings.md`](../examples/synthetic/expected-findings.md).
+4. Score it using the [evidence evaluation rubric](evaluation.md).
+5. Save the response and run:
 
 ```bash
 python scripts/validate.py --response path/to/response.md --fixture synthetic
 ```
 
-The validator checks deterministic structure and fixture assertions. It does not prove every scientific judgment is correct.
+Passing the script means expected structural signals and deterministic fixture findings were detected. It does not certify all scientific judgments.
 
 ## Verify adaptive routing
 
-Use a fresh chat for each case with the same synthetic paper:
+Use the same synthetic paper but ask different questions in fresh chats. See [`examples/adaptive-routing/`](../examples/adaptive-routing/README.md) and the [adaptive routing evaluation](evaluation-adaptive.md).
 
-```text
-Is this worth reading if I mainly care about robust classification?
+Validate the routing fixture definition first:
+
+```bash
+python scripts/check_adaptive_routes.py
 ```
 
-Expected: **Triage**, not a full evidence map.
+Then run the R1–R7 cases under the same model/mode/date and record routing failures such as `OVERREAD`, `UNDERREAD`, `MISROUTE`, `NO_STOP`, `EVIDENCE_BYPASS`, or `IDEA_OVERPROMOTION`.
 
-```text
-Is Module C actually necessary?
-```
+## Source selection check
 
-Expected: **Targeted**, centered on the relevant method description and ablation evidence.
+Confirm that the active source is the paper uploaded in the current chat. If an older Project file is selected, use the [S1 recovery trigger](../prompts/en/chat-triggers.md).
 
-```text
-Can this paper give me a research idea?
-```
-
-Expected: **Candidate Gap / Candidate Idea** language unless novelty has actually been checked.
-
-Use the full routing matrix in [evaluation-adaptive.md](evaluation-adaptive.md).
-
-## Suggested chat organization
-
-- One Project per broad research area or program.
-- One chat per paper.
-- Ask narrow questions first when you are still deciding whether the paper is worth deeper reading.
-- Use Deep only for papers that deserve comprehensive reconstruction.
-- Use Audit when a claim matters enough to re-open decisive evidence skeptically.
-- Keep supplements in the same paper chat when their relation is clear.
+Read access limits before trusting any substantive verdict. Attachment visibility alone does not prove that decisive tables, figures, or appendices were actually inspected.
 
 ## Use without a Project
 
-Paste the complete Project instructions at the start of a normal chat, upload the paper, and ask your question normally. You will need to paste the instructions again in each new chat.
+Paste the complete Project prompt at the start of a normal chat, then upload the paper and ask your question. You must paste the instructions again in each new chat.
+
+## Suggested organization
+
+- one Project per broad field or research program;
+- one chat per paper;
+- supplements in the same paper chat;
+- use natural-language goals for most work;
+- use `Round 1` / `Round 2` when you intentionally want Deep/Audit reproducibility;
+- use a separate comparison chat after individual papers have been inspected enough for the comparison goal.
