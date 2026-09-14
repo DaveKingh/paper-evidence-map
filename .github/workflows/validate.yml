@@ -1,7 +1,11 @@
 name: validate
 
 on:
+  # Feature branches are validated by their PR. A push run is only needed once
+  # changes land on main, avoiding duplicate CI/email for the same PR commit.
   push:
+    branches:
+      - main
   pull_request:
 
 permissions:
