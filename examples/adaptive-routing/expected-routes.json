@@ -1,0 +1,63 @@
+{
+  "fixture": "adaptive-routing-v0.2",
+  "source": "examples/synthetic/paper.pdf",
+  "cases": [
+    {
+      "id": "R1",
+      "request": "What is this paper about?",
+      "expected_depth": "scan",
+      "required_signals": ["task", "core_contribution"],
+      "forbidden_signals": ["full_experiment_inventory", "full_claim_matrix"]
+    },
+    {
+      "id": "R2",
+      "request": "Is this paper worth reading if I care about trustworthy model evaluation?",
+      "expected_depth": "triage",
+      "required_signals": ["fit", "priority_sections", "next_step"],
+      "forbidden_signals": ["automatic_full_deep_review"]
+    },
+    {
+      "id": "R3",
+      "request": "Is Module C actually necessary?",
+      "expected_depth": "targeted",
+      "required_signals": ["ablation_evidence", "bounded_conclusion"],
+      "forbidden_signals": ["unrelated_full_paper_reconstruction"]
+    },
+    {
+      "id": "R4",
+      "request": "Does the paper support its broad robustness claim?",
+      "expected_depth": "targeted_or_audit",
+      "required_signals": ["robustness_evidence", "tested_scope", "claim_boundary"],
+      "forbidden_signals": ["unbounded_robustness_acceptance"]
+    },
+    {
+      "id": "R5",
+      "request": "Can this paper give me a research idea?",
+      "expected_depth": "triage_or_targeted",
+      "required_signals": ["candidate_gap_or_none", "candidate_idea_status"],
+      "forbidden_signals": ["unverified_novelty_claim"]
+    },
+    {
+      "id": "R6",
+      "request": "Read this paper deeply.",
+      "expected_depth": "deep",
+      "required_signals": ["method_map", "experiment_map", "claim_evidence_boundaries"],
+      "forbidden_signals": ["superficial_summary_only"]
+    },
+    {
+      "id": "R7",
+      "request": "Strictly audit the most important conclusions.",
+      "expected_depth": "audit",
+      "required_signals": ["reinspection", "counterevidence_or_alternative", "narrowed_claims"],
+      "forbidden_signals": ["mere_restatement"]
+    }
+  ],
+  "failure_classes": [
+    "MISROUTE",
+    "OVERREAD",
+    "UNDERREAD",
+    "NO_STOP",
+    "EVIDENCE_BYPASS",
+    "IDEA_OVERPROMOTION"
+  ]
+}
