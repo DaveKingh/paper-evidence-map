@@ -1,61 +1,199 @@
-# Design Reference Audit for v0.2
+# Design Reference Audit: Nature Skills × Academic Research Suite × Paper Evidence Map
 
-This note records what Paper Evidence Map v0.2 borrows from mature research-skill architectures, what it deliberately does not copy, and what remains PEM-specific.
+This note records the architecture decisions behind PEM v0.2 so the project can borrow mature engineering patterns without becoming a clone of either reference project.
 
-## Nature Skills: primary architectural reference
+## 1. Nature Skills: what PEM borrows
 
-The strongest architectural influence is `nature-reader` and the wider Nature Skills static/dynamic pattern.
+The strongest influence is the **skill packaging and progressive-loading model** visible in `nature-reader`:
 
-Borrowed design ideas:
+- a short `SKILL.md` that routes rather than containing the entire behavior contract;
+- a declarative `manifest.yaml` describing what is always loaded and what is loaded only under specific conditions;
+- static core rules separated from dynamic fragments;
+- deep references opened only when needed;
+- explicit output contracts and pre-response checks;
+- follow-up questions handled locally instead of regenerating the full artifact.
 
-- Keep `SKILL.md` as a short router rather than a complete workflow specification.
-- Use a declarative `manifest.yaml` to separate always-loaded core rules from dynamically selected guidance.
-- Load deep references only when the current task needs them.
-- Treat narrow follow-up questions as local source-grounded tasks instead of rebuilding the entire paper artifact.
-- Keep output contracts explicit and reviewable.
+PEM v0.2 adopts the same class of architecture:
 
-Not copied:
+```text
+SKILL.md
+  ↓
+manifest.yaml
+  ├── always_load
+  ├── routing
+  ├── depth/lens selection
+  └── on-demand references
+```
 
-- PEM does not default to building a full bilingual paper reader or source-map artifact.
-- PEM does not require complete-paper processing before answering a focused research question.
-- PEM's primary output is a bounded research judgment, not a reconstructed paper document.
+### What PEM does not copy from Nature Reader
 
-## Academic Research Suite: secondary orchestration and quality reference
+Nature Reader's default product is a full bilingual reader with artifacts such as `paper.md`, `source_map.json`, translation notes, and extracted assets. That is not PEM's default job.
 
-ARS contributes a different set of ideas:
+PEM remains decision- and evidence-oriented. Its output may be very small when the user only needs a Triage or Targeted answer. It does not force a whole-document artifact before answering a source-linked question.
 
-- Route by user intent before entering a workflow.
-- Do not load an entire suite by default.
-- Keep compatibility aliases separate from the underlying workflow semantics.
-- Escalate into more rigorous modes only when the research state requires them.
-- Treat quality/integrity checks as explicit stages rather than stylistic suggestions.
+## 2. Academic Research Suite: what PEM borrows
 
-Not copied:
+ARS contributes the strongest examples of **intent-first orchestration and quality/integrity boundaries**:
 
-- PEM is not an end-to-end research/writing/review/experiment platform.
-- PEM does not need an agent-team architecture for ordinary single-paper reading.
-- PEM does not reproduce ARS's full workflow/mode registry or runtime adapter layer.
+- do not load the whole suite by default;
+- route by user intent before entering a workflow;
+- keep workflow-specific rules outside the root router;
+- support compatibility aliases without making aliases the only interface;
+- separate broad research phases and use stronger integrity gates when claims become more consequential;
+- distinguish unavailable evidence from negative evidence;
+- make test/evaluation infrastructure part of the product rather than documentation only.
 
-## Paper Evidence Map: retained differentiator
+PEM uses those principles to support:
 
-PEM keeps its own evidence model as the product core:
+```text
+user goal
+  ↓
+minimum reading depth
+  ↓
+selected lens(es)
+  ↓
+source-grounded evidence work
+  ↓
+stop or escalate
+```
 
-`claim -> evidence -> support -> defensible boundary`
+### What PEM does not copy from ARS
 
-v0.2 extends that model without replacing it:
+PEM is not an end-to-end research lifecycle suite. It does not attempt to replace ARS-style literature search, experiment orchestration, manuscript drafting, peer review simulation, or publication pipelines.
 
-`user goal -> minimum reading depth -> selected lenses -> evidence check -> bounded answer`
+That narrow scope is deliberate.
 
-For research ideation:
+## 3. What remains PEM-specific
 
-`observation -> Candidate Gap -> targeted evidence check -> Candidate Idea -> external novelty/feasibility checks when needed -> Research Idea`
+PEM's scientific core is still its own evidence model:
 
-## Architecture decision
+```text
+Claim
+  ↓
+Evidence
+  ↓
+Support
+  ↓
+Defensible Boundary
+```
 
-PEM v0.2 therefore uses:
+The v0.2 extension adds adaptive reading and traceable idea formation:
 
-- **Nature Skills** mainly for packaging, progressive loading, manifest-driven structure, and task-local source use.
-- **Academic Research Suite** mainly for intent routing, staged rigor, compatibility routing, and quality-gate thinking.
-- **Paper Evidence Map v0.1** for provenance discipline, claim/evidence/boundary logic, source isolation, adversarial fixtures, and testability.
+```text
+Observation
+  ↓
+Candidate Gap
+  ↓
+Targeted Evidence Check
+  ↓
+Candidate Idea
+  ↓
+Novelty / feasibility checks when needed
+  ↓
+Research Idea
+```
 
-The result should remain smaller than ARS and more analytical than Nature Reader.
+This supports the three project rules:
+
+1. **No user need → no analysis.**
+2. **No evidence → no strong claim.**
+3. **No verified gap → no strong research idea.**
+
+## 4. Why Goal + Depth + Lens are separate
+
+These concepts solve different problems:
+
+- **Goal** = why the user is reading the paper now.
+- **Depth** = how much evidence work is needed.
+- **Lens** = what analytical capability is relevant.
+
+For example:
+
+```text
+Goal: decide whether the paper is useful for a research direction
+Depth: Triage
+Lenses: Relevance + Contribution + Gap/Idea where useful
+```
+
+or:
+
+```text
+Goal: determine whether an ablation supports a necessity claim
+Depth: Targeted
+Lenses: Method + Evidence + Critical
+```
+
+Collapsing these into one rigid workflow would recreate the v0.1 problem.
+
+## 5. Why STOP is a first-class behavior
+
+Nature Reader explicitly avoids rebuilding a full reader for a narrow follow-up question. ARS explicitly avoids loading every workflow by default. PEM applies the same efficiency principle to scientific reading itself:
+
+> Once the user's immediate question is answered with sufficient evidence and uncertainty, stop.
+
+A response may therefore be scientifically accurate yet still fail PEM v0.2 if it performs unnecessary full-paper analysis.
+
+This is evaluated as `OVERREAD` or `NO_STOP`.
+
+## 6. Evaluation consequences
+
+PEM v0.1 mainly tested evidence fidelity. PEM v0.2 must test both:
+
+```text
+scientific evidence fidelity
++
+routing / scope discipline
+```
+
+The canonical routing fixture is under `examples/adaptive-routing/`, with live evaluation guidance in `docs/evaluation-adaptive.md` and a deterministic contract checker in `scripts/check_adaptive_routes.py`.
+
+Routing failure classes are:
+
+- `MISROUTE`
+- `OVERREAD`
+- `UNDERREAD`
+- `NO_STOP`
+- `EVIDENCE_BYPASS`
+- `IDEA_OVERPROMOTION`
+
+The deterministic checker validates the fixture definition only. Semantic routing quality still requires repeated live runs and human review.
+
+## 7. Current implementation status
+
+Implemented on the v0.2 branch:
+
+- thin `SKILL.md` router;
+- `manifest.yaml` static/dynamic loading contract;
+- always-loaded core principles, source gate, and output contract;
+- Goal Router and Depth Router;
+- composable reading lenses;
+- full and compact English/Chinese adaptive Project prompts;
+- README and Quickstart migration to natural-language entry;
+- methodology migration from universal two-round reading to adaptive depth;
+- Candidate Gap / Candidate Idea boundaries;
+- adaptive routing fixture + machine-readable expectations + checker;
+- adaptive routing evaluation guide and failure taxonomy.
+
+Still required before a confident v0.2 release:
+
+- repeated live runs across the routing matrix under recorded model/mode/date conditions;
+- evidence-fidelity regression runs against existing synthetic/adversarial/access/source-precedence fixtures;
+- optional integration of stable routing-contract checks into the main CI once it adds value without pretending deterministic code can judge semantic routing.
+
+## 8. Positioning
+
+A useful ecosystem boundary is:
+
+```text
+source-grounded paper ingestion / reader
+        ↓
+Paper Evidence Map
+  relevance / understanding / evidence / boundary / gap / idea
+        ↓
+broader research suites
+  literature / experiment / writing / review / publication workflow
+```
+
+PEM should stay narrow enough that users can understand its promise quickly:
+
+> **An adaptive, evidence-grounded scientific paper reading skill that decides what to read, how deeply to read it, and what the paper actually proves before turning observations into research ideas.**
