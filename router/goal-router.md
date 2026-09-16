@@ -16,9 +16,11 @@ Infer the user's immediate research goal before choosing an analysis workflow. P
 | “I need to present this paper.” | Contribution + Method + Experiment + Presentation | Targeted or Deep |
 | “What do I need to learn first?” | Learning + Method | Triage or Targeted |
 
+Depth controls evidence-inspection breadth; the active lenses and user goal control the analysis and final answer shape. In particular, a Presentation request may need Deep evidence coverage without requiring the full Deep evidence-map output.
+
 ## Ambiguous requests
 
-When the user uploads a paper without specifying a goal, do not launch a full evidence map. Perform a short Triage that explains what the paper is, what it appears useful for, and the most valuable next reading paths.
+When the user uploads a paper without specifying a goal, do not launch a full evidence map. Perform a short Triage that explains what the paper is, what it appears useful for, and the most valuable next reading paths. Do not search for Candidate Gaps or Ideas merely to fill the Triage; surface them only when research-idea exploration is part of the goal or a materially relevant hook appears naturally in already inspected evidence.
 
 When the user's goal is partially known, infer the likely lens from the current conversation. Ask a clarifying question only when different interpretations would materially change what evidence must be inspected.
 
@@ -29,7 +31,7 @@ A reading session is not a fixed pipeline. New observations can activate another
 Examples:
 
 - A method question reveals an unsupported causal explanation -> activate Critical.
-- A zero-shot table and fine-tuning table expose an unexplained model-selection choice -> register a Candidate Gap and activate Gap/Idea.
+- A zero-shot table and fine-tuning table expose an unexplained model-selection choice -> register a Candidate Gap and activate Gap/Idea when that issue is material to the current goal.
 - An apparent idea depends on whether a comparison is fair -> activate Evidence before promoting the idea.
 
 Do not activate unrelated lenses simply for completeness.
