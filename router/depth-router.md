@@ -10,15 +10,19 @@ Use when the user only needs orientation. Inspect enough primary material to ide
 
 ## D1 — Triage
 
-Use by default for relevance and “worth reading?” questions. Determine:
+Use by default for relevance and “worth reading?” questions. Reading value is goal-relative. Determine the five core items:
 
-- relevance to the user's stated goal, without equating relevance with research value or a research gap;
+- relevance to the user's current goal, without equating relevance with research value or a research gap;
 - what the paper contributes;
 - the highest-value sections/evidence objects to inspect next;
 - what can safely remain unread for now;
 - one best next action.
 
-Candidate gaps or idea hooks are optional: include them only when the user is exploring research opportunities or they emerge materially from evidence already inspected for the triage decision. Do not activate Gap/Idea or expand scope simply to fill a triage template.
+Then apply a **goal-conditioned extension**. If the explicit request or current conversation establishes that the user is reading to find ideas, gaps, topics, or research directions, research leverage becomes a required Triage question and Gap / Idea lenses should be activated as needed. If the user's purpose is presentation, learning, benchmark selection, or another goal, extend Triage only with judgments directly relevant to that purpose.
+
+Do not search for Candidate Gaps / Ideas merely to fill a template when research exploration is not part of the goal. Conversely, do not omit research leverage when idea-seeking is the established goal simply because the latest user utterance is only “is this worth reading?”.
+
+For idea-oriented Triage, inspect only enough evidence to decide whether a meaningful research hook is worth pursuing. If no sufficiently supported hook appears, say so and stop. If a hook appears, report the Candidate Gap / Candidate Idea, its internal evidence, and the highest-value next check, then stop unless the user asks to continue.
 
 Triage is a decision aid, not a miniature full review.
 
