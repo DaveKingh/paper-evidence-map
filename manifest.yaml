@@ -1,0 +1,62 @@
+name: paper-evidence-map
+version: 0.2.0-dev
+description: >
+  Declarative loading contract for adaptive, evidence-grounded paper reading.
+  The router loads a small core for every task, then activates only the goal,
+  depth, and lens guidance required by the user's current question.
+
+always_load:
+  - static/core/principles.md
+  - static/core/source-gate.md
+  - static/core/output-contract.md
+
+routing:
+  goal_router: router/goal-router.md
+  depth_router: router/depth-router.md
+
+axes:
+  depth:
+    default: triage
+    values:
+      scan: router/depth-router.md
+      triage: router/depth-router.md
+      targeted: router/depth-router.md
+      deep: router/depth-router.md
+      audit: router/depth-router.md
+  lens:
+    multi: true
+    overview: lenses/README.md
+    values:
+      relevance: lenses/relevance.md
+      contribution: lenses/contribution.md
+      method: lenses/method.md
+      experiment: lenses/experiment.md
+      evidence: lenses/evidence.md
+      critical: lenses/critical.md
+      gap: lenses/gap.md
+      idea: lenses/idea.md
+      learning: lenses/learning.md
+      presentation: lenses/presentation.md
+
+references:
+  on_demand:
+    - condition: claim support, boundaries, counterevidence, or skeptical audit
+      path: docs/methodology.md
+    - condition: structured evidence-map export
+      path: schemas/evidence-map.schema.json
+    - condition: structured Candidate Gap export or gap validation
+      path: schemas/gap.schema.json
+    - condition: live prompt evaluation, fixtures, or regression testing
+      path: docs/evaluation.md
+    - condition: ChatGPT Project compatibility behavior or legacy Round 1/Round 2 execution
+      path: prompts/en/project-instructions.md
+    - condition: Chinese ChatGPT Project compatibility behavior or legacy 第一轮/第二轮 execution
+      path: prompts/zh-CN/project-instructions.md
+
+compatibility:
+  legacy_triggers:
+    round_1: deep
+    第一轮: deep
+    round_2: audit
+    第二轮: audit
+    focus: targeted

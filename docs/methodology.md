@@ -2,30 +2,106 @@
 
 ## Core object: the claim–evidence–boundary triple
 
-For every consequential claim, the workflow asks three questions:
+For every consequential claim, Paper Evidence Map asks:
 
 1. **Claim** — What exactly is being asserted, and by whom?
 2. **Evidence** — What result or method detail bears on it, and where is it?
 3. **Boundary** — What is the strongest narrower statement that the evidence can defend?
 
-The third question prevents a common failure: correctly finding a result but repeating a broader conclusion than that result warrants.
+Finding the correct result is not enough if the conclusion is broader than the evidence warrants.
 
-## Why two rounds
+## Adaptive control architecture
 
-Round 1 optimizes coverage. It reconstructs the paper and exposes missing links. Round 2 optimizes falsification: it re-opens the most important evidence, seeks alternative explanations, and revises the claim rather than merely adding more prose.
+PEM is not a fixed sequence of reading stages. Its runtime is controlled by three gates around goal/depth routing:
 
-The rounds should be separate because a single long answer can give the appearance of depth without actually re-checking decisive evidence.
+```text
+User Goal
+    |
+    v
+Access Gate
+    |
+    v
+Goal / Depth Router
+    |
+    v
+Minimum-Sufficient Reading + required lenses
+    |
+    v
+Evidence
+    |
+    +-- side finding --> Materiality Gate
+    |                     | yes: minimum necessary check, then return
+    |                     | no: Candidate Issue, do not expand
+    |
+    v
+Sufficiency / STOP Gate
+    | no: continue minimum necessary reading
+    | yes
+    v
+Answer
+```
+
+### Access Gate
+Ask whether enough primary evidence is accessible for the requested conclusion. If decisive evidence is inaccessible, narrow the answer or return Cannot judge rather than infer from filenames, memory, or external material.
+
+### Materiality Gate
+A side finding justifies rerouting only if it could materially change the correctness, boundary, or next decision of the current answer. Otherwise it remains a Candidate Issue and does not expand the task.
+
+### Sufficiency / STOP Gate
+Stop once the current goal is reliably answered with adequate evidence and uncertainty. Completeness means covering what can change the answer, not reproducing every paper section.
+
+D0–D4 and analytical lenses are therefore control parameters and capabilities selected by the router and gates, not a mandatory pipeline.
+
+## Reading depth
+
+The default depth for an unspecified paper-reading request is **Triage**, not Deep.
+
+| Depth | Purpose |
+|---|---|
+| Scan | Establish what the paper is about and preliminary goal-relative relevance |
+| Triage | Decide relevance and what to inspect next |
+| Targeted | Answer one focused method, experiment, claim, or idea question |
+| Deep | Reconstruct the broad method/experiment/claim–evidence map |
+| Audit | Re-open decisive evidence and try to falsify or narrow key claims |
+
+The workflow escalates only when the current depth cannot support the requested conclusion.
+
+## Where Round 1 and Round 2 fit
+
+The historical two-round workflow remains useful as a **Deep → Audit** path rather than the universal entry point.
+
+- **Round 1 / 第一轮** maps to Deep.
+- **Round 2 / 第二轮** maps to Audit.
+
+Keeping these passes separate still helps force re-inspection of decisive evidence, while many real questions should stop earlier at Triage or Targeted depth.
 
 ## Evidence labels
 
 | Label | Meaning | Example |
 |---|---|---|
-| Paper fact | Explicit and locatable report | “Table 2 reports 0.78 macro-F1.” |
+| Paper fact | Directly locatable reported value, observation, or procedure | “Table 2 reports 0.78 macro-F1.” |
 | Author interpretation | Explanation or generalization made by authors | “The authors attribute the gain to Module G.” |
-| Analyst judgment | Inference from internal evidence | “The ablation weakens the necessity claim.” |
+| Analyst judgment | Inference from evidence | “The ablation weakens the necessity claim.” |
 | Unknown | Missing or inaccessible | “The number of random seeds is not specified.” |
 
-Labels apply to the proposition, not merely to the fact that words appear in a paper. “Table 2 reports 0.78” is a paper fact. “This proves the module is essential” is an author interpretation if made by the authors, even though the sentence itself is locatable. A response should split a sentence that mixes an observation with an inference.
+A Paper fact is a fact about what the paper directly reports; it is not a claim that the result has been independently reproduced. Labels apply to proposition content, not merely to whether words appear in the paper.
+
+## Internal versus external evidence
+
+Paper-internal claims must be grounded in the primary paper and clearly linked official supplements. External material can support background explanation, concept checking, novelty search, or other explicitly external questions, but **external evidence cannot repair missing internal evidence**.
+
+For example, if the paper does not report a random seed while an official code repository currently uses `seed=42`, PEM may report the implementation evidence separately but must not rewrite the paper record as “the paper used seed 42.” More detailed source classes such as paper, supplement, official code, external paper, and benchmark documentation may be represented in downstream provenance schemas without forcing them into every user-facing answer.
+
+## Claim-dependent evidence priority
+
+Evidence priority depends on the claim. Prefer evidence most directly tied to the relevant observation or operation:
+
+- performance/robustness claims → relevant Table/Figure/Results plus experimental setup;
+- mechanism/architecture claims → Methods/Algorithm/Equation and, when explicitly used as external implementation evidence, code;
+- dataset/protocol claims → Dataset/Experimental Setup/Supplement;
+- author motivation/interpretation → Introduction/Discussion, while keeping it typed as interpretation.
+
+Summary wording in Abstract/Introduction/Discussion/Conclusion cannot override more direct decisive evidence. If paper sections conflict, report the conflict rather than silently reconciling it.
 
 ## Support levels
 
@@ -34,64 +110,70 @@ Labels apply to the proposition, not merely to the fact that words appear in a p
 - **Weak:** evidence is indirect, narrow, under-controlled, or inconsistent with the claim's breadth.
 - **Cannot judge:** decisive information is missing or inaccessible.
 
-These labels are local to a claim. They are not an overall quality ranking.
+Support is claim-local, not an overall paper score.
 
-“Weak” and “Cannot judge” are deliberately different. Use **Weak** when accessible evidence bears on the claim but is indirect, mismatched, poorly controlled, or contradictory. Use **Cannot judge** when the evidence needed to decide is missing or inaccessible. This distinction prevents absence of access from being misreported as negative evidence.
+## Access and provenance details
 
-## Access and provenance gate
+An attachment icon is not evidence that its content was read. Establish source/access context proportional to the selected depth: what sources are primary/supplementary/contextual, what decisive evidence was inspected, and what is uninspected, missing, unreadable, truncated, or OCR-uncertain.
 
-An attachment icon is not evidence that its content was read. Before making substantive claims, the workflow records:
-
-- which files are primary papers, supplements, or non-paper context;
-- which sections and evidence objects were inspected;
-- which present content was not inspected;
-- which content was missing, unreadable, truncated, or OCR-uncertain.
-
-When no substantive primary-paper content is accessible, the correct output is an access-limit notice—not a partly filled evidence map inferred from the title or a previous answer. With partial access, conclusions must stay inside the visible range.
-
-For multiple files, stable source IDs prevent evidence laundering across a paper, supplement, review, and answer key. A locator should identify the source and the evidence object, for example `S1, Table 2, row “without C”`. Printed page numbers may be used only when visible; viewer page indexes must be labeled as such. A prose reference such as “see Figure 4” does not establish that Figure 4 exists in the supplied content or was inspected.
-
-Within a Project, availability is not the same as selection. The newest accessible paper attached in the current chat takes precedence as the primary `S1` candidate over older Project files and prior analyses. If multiple current-chat papers are plausible, the assistant must ask which one to use. This product-dependent behavior has a [manual regression fixture](../examples/current-chat-precedence/README.md) and a documented [recovery procedure](known-issues.md#the-wrong-project-file-is-selected).
-
-This gate follows the current [official ChatGPT Projects documentation](https://learn.chatgpt.com/docs/projects): projects carry uploaded files and instructions across chats, but the sources needed for a task still have to be uploaded or connected. Product interfaces and limits can change, so the repository offers full and compact instructions without claiming a fixed character limit.
+For multiple files, stable source IDs prevent evidence laundering. Locators should identify source and evidence object, e.g. `S1, Table 2, row “without C”`. The newest accessible paper attached in the current chat takes precedence as the primary `S1` candidate over older Project files and prior analyses; if multiple current-chat papers are plausible, ask which is primary.
 
 ## Claim-local support decision
 
-Ask these questions in order:
+Ask in order:
 
-1. Is the decisive evidence accessible? If not, **Cannot judge**.
-2. Does the cited object contain the reported value, direction, and comparison? If not, withdraw/correct the locator or rate the claim **Weak** when contradictory evidence is visible.
+1. Is decisive evidence accessible? If not, **Cannot judge**.
+2. Does the cited object contain the reported value, direction, and comparison?
 3. Does the design match the exact claim—population, task, intervention, baseline, metric, and time horizon?
 4. Are controls and uncertainty adequate for that scope?
 5. What is the strongest narrower statement that survives?
 
-A direct descriptive number can be strongly supported as “the paper reports X” while a causal or universal conclusion drawn from the same number remains weak. Support attaches to the wording being judged.
+A descriptive number can strongly support “the paper reports X” while weakly supporting a causal or universal conclusion drawn from it.
+
+## Candidate Issue, Gap, and Research Idea
+
+### Candidate Issue
+A traceable anomaly, contradiction, or potential problem that is not material to the current question. Record it briefly when useful; do not automatically investigate it.
+
+### Candidate Gap: orthogonal status model
+
+A Candidate Gap is not represented by a single maturity ladder. Keep three dimensions separate:
+
+1. **Origin** — how it was discovered:
+   - `explicit`: authors explicitly state a limitation, unresolved problem, or future-work item;
+   - `inferred`: analyst derives it from locatable internal evidence.
+2. **Gap status** — how well the gap itself is supported:
+   - `candidate`: plausible but not yet sufficiently checked;
+   - `supported`: targeted internal checking supports the stated gap;
+   - `contradicted`: decisive evidence undermines it;
+   - `unresolved`: available evidence cannot decide.
+3. **Novelty status** — what external literature checking says:
+   - `unchecked`;
+   - `partially_checked`;
+   - `no_close_prior_found` — no close prior work was found within the documented search scope; this is not proof of absence;
+   - `contradicted` — close prior work materially undermines the novelty premise;
+   - `unclear`.
+
+For an **Inferred Gap**, preserve at minimum:
+
+`Observation + Evidence refs + Reasoning chain + Alternative explanations + Verification needed`
+
+A missing experiment alone is not a publishable gap. `origin`, `gap_status`, and `novelty_status` answer different questions and must not be collapsed into `Candidate → Verified → Novel`.
+
+### Candidate Idea
+
+A Candidate Idea preserves:
+
+`observation → candidate gap → research question → hypothesis → minimal experiment → possible contribution → risks`
+
+A stronger Research Idea requires enough gap support plus whatever novelty and feasibility checking the intended claim requires. Novelty search should report its scope and limitations; “no close prior found” never means that absence has been proven.
 
 ## Threat model
 
-The workflow explicitly addresses:
+PEM explicitly addresses abstract/conclusion overstatement, observation/interpretation conflation, convention-filled missing details, broad generalization from narrow evidence, missing controls/ablations, inconsistent values, document prompt injection, source mixing, stale Project-file selection, fabricated locators/values/citations, false full-read claims, over-reading, and idea over-promotion.
 
-- abstract and conclusion overstatement;
-- result/interpretation conflation;
-- unreported details filled in from convention;
-- one-condition evidence generalized broadly;
-- missing ablations for “essential” modules;
-- inconsistent values across text and tables;
-- document-embedded prompt injection;
-- source mixing between papers, supplements, reviews, and answer keys;
-- an older Project file silently replacing the paper attached in the current chat;
-- fabricated pages, figures, values, quotations, or citations;
-- false claims of full-document coverage.
+It does not solve fabricated source data, all statistical errors, inaccessible evidence, or field-wide novelty without external evidence.
 
-It does not solve fabricated source data, sophisticated statistical errors, inaccessible content, or field-wide novelty without external evidence.
+## Prompt variants and testing boundary
 
-## Prompt variants and feature boundary
-
-- `project-instructions.md` is the complete contract. It includes Round 1, Round 2, provenance controls, locator verification, external novelty-search boundaries, comparisons, and a self-contained JSON export contract.
-- `project-instructions-compact.md` keeps the highest-value Round 1/2 evidence controls with fewer persistent instructions. It intentionally omits JSON export and specialist triggers.
-
-No prompt can guarantee compliant behavior. The prompt is one component of a testable workflow: use a known fixture, score content rather than style, inspect every cited location, and repeat live runs under recorded model/mode/date conditions.
-
-## Why JSON is self-contained
-
-Project instructions may be copied without the rest of this repository. The full prompt therefore embeds the required keys and enums for `Export JSON`. If the schema file is available, it remains the authoritative machine check; if not, the embedded contract prevents the model from having to guess fields. Unknown values use `null` or empty arrays rather than invented content.
+`project-instructions.md` is the complete adaptive contract; the compact prompt preserves the highest-value adaptive and evidence controls. Prompts cannot guarantee compliance. Test content fidelity and routing separately, inspect decisive cited locations, and repeat live runs under recorded model/mode/date conditions.

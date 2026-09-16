@@ -1,7 +1,11 @@
 name: validate
 
 on:
+  # Feature branches are validated by their PR. A push run is only needed once
+  # changes land on main, avoiding duplicate CI/email for the same PR commit.
   push:
+    branches:
+      - main
   pull_request:
 
 permissions:
@@ -26,6 +30,10 @@ jobs:
         run: python scripts/build_fixture_pdf.py --check
       - name: Validate repository
         run: python scripts/validate.py
+      - name: Validate adaptive routing fixture contract
+        run: python scripts/check_adaptive_routes.py
+      - name: Validate gap schema JSON syntax
+        run: python -m json.tool schemas/gap.schema.json > /dev/null
       - name: Validate reference Markdown against structure and fixture assertions
         run: >-
           python scripts/validate.py
@@ -54,3 +62,7 @@ jobs:
         run: python scripts/build_fixture_pdf.py --check
       - name: Validate repository
         run: python scripts/validate.py
+      - name: Validate adaptive routing fixture contract
+        run: python scripts/check_adaptive_routes.py
+      - name: Validate gap schema JSON syntax
+        run: python -m json.tool schemas/gap.schema.json > /dev/null

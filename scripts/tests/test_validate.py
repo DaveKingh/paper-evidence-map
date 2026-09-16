@@ -27,7 +27,6 @@ BUILD_SPEC = importlib.util.spec_from_file_location(
 )
 if BUILD_SPEC is None or BUILD_SPEC.loader is None:  # pragma: no cover
     raise RuntimeError("could not load scripts/build_fixture_pdf.py")
-# The builder imports the public validator module by its normal script name.
 sys.modules["validate"] = validate
 pdf_builder = importlib.util.module_from_spec(BUILD_SPEC)
 sys.modules[BUILD_SPEC.name] = pdf_builder
@@ -38,17 +37,50 @@ class RepositoryChecksTest(unittest.TestCase):
     def test_repository_integrity(self) -> None:
         self.assertEqual(validate.repository_errors(REPOSITORY_ROOT), [])
 
-    def test_current_chat_attachment_precedence_is_bilingual(self) -> None:
-        contracts = {
-            "prompts/en/project-instructions.md": "Current-chat attachment precedence",
-            "prompts/en/project-instructions-compact.md": "Current-chat attachment precedence",
-            "prompts/zh-CN/project-instructions.md": "当前聊天附件优先",
-            "prompts/zh-CN/project-instructions-compact.md": "当前聊天附件优先",
-        }
-        for relative_path, marker in contracts.items():
+    def test_v02_prompt_behavior_contract_is_bilingual(self) -> None:
+        """Protect v0.2 capabilities, not one legacy sentence spelling."""
+        self.assertEqual(validate.check_prompt_contract(REPOSITORY_ROOT), [])
+        for relative_path in (
+            "prompts/en/project-instructions.md",
+            "prompts/en/project-instructions-compact.md",
+            "prompts/zh-CN/project-instructions.md",
+            "prompts/zh-CN/project-instructions-compact.md",
+        ):
             with self.subTest(path=relative_path):
                 text = (REPOSITORY_ROOT / relative_path).read_text(encoding="utf-8")
-                self.assertIn(marker, text)
+                for marker in ("Scan", "Triage", "Targeted", "Deep", "Audit", "Candidate Gap", "Candidate Idea"):
+                    self.assertIn(marker, text)
+
+    def test_prompt_contract_accepts_reworded_current_chat_rule(self) -> None:
+        """Regression: semantic-equivalent v0.2 wording must not fail CI."""
+        original = validate._PROMPT_CONTRACT_GROUPS["prompts/en/project-instructions.md"]
+        self.assertIn(("current chat", "current-chat"), original)
+        self.assertNotIn(("Current-chat attachment precedence",), original)
+
+    def test_prompt_contract_protects_open_request_triage_and_config_binding(self) -> None:
+        """Regression: vague requests stay Triage and cross-table values stay config-bound."""
+        for relative_path in (
+            "prompts/en/project-instructions.md",
+            "prompts/en/project-instructions-compact.md",
+        ):
+            groups = validate._PROMPT_CONTRACT_GROUPS[relative_path]
+            self.assertIn(("take a look", "help me read this", "what do you think of this paper"), groups)
+            self.assertIn(("not directly comparable",), groups)
+
+        for relative_path in (
+            "prompts/zh-CN/project-instructions.md",
+            "prompts/zh-CN/project-instructions-compact.md",
+        ):
+            groups = validate._PROMPT_CONTRACT_GROUPS[relative_path]
+            self.assertIn(("看一下", "帮我读读", "这篇怎么样"), groups)
+            self.assertIn(("不可直接比较",), groups)
+
+    def test_prompt_contract_accepts_reworded_chinese_stop_rule(self) -> None:
+        """Regression: equivalent Chinese STOP wording must not fail CI."""
+        alternatives = validate._PROMPT_CONTRACT_GROUPS[
+            "prompts/zh-CN/project-instructions-compact.md"
+        ][-1]
+        self.assertIn("当前目标满足就停止", alternatives)
 
     def test_markdown_image_and_html_image_are_checked(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -168,7 +200,7 @@ class JsonExportTest(unittest.TestCase):
 
     def test_duplicate_claim_ids_are_rejected(self) -> None:
         instance = copy.deepcopy(self.instance)
-        instance["claims"].append(copy.deepcopy(instance["claims"][0]))
+        instance["claims"].append(copy.deepcopy(self.instance["claims"][0]))
         errors = validate.evidence_map_semantic_errors(instance)
         self.assertTrue(any("duplicate claim" in item for item in errors), errors)
 
