@@ -25,17 +25,18 @@ axes:
       audit: router/depth-router.md
   lens:
     multi: true
+    overview: lenses/README.md
     values:
-      relevance: lenses/README.md
-      contribution: lenses/README.md
-      method: lenses/README.md
-      experiment: lenses/README.md
-      evidence: lenses/README.md
-      critical: lenses/README.md
-      gap: lenses/README.md
-      idea: lenses/README.md
-      learning: lenses/README.md
-      presentation: lenses/README.md
+      relevance: lenses/relevance.md
+      contribution: lenses/contribution.md
+      method: lenses/method.md
+      experiment: lenses/experiment.md
+      evidence: lenses/evidence.md
+      critical: lenses/critical.md
+      gap: lenses/gap.md
+      idea: lenses/idea.md
+      learning: lenses/learning.md
+      presentation: lenses/presentation.md
 
 references:
   on_demand:
@@ -43,6 +44,8 @@ references:
       path: docs/methodology.md
     - condition: structured evidence-map export
       path: schemas/evidence-map.schema.json
+    - condition: structured Candidate Gap export or gap validation
+      path: schemas/gap.schema.json
     - condition: live prompt evaluation, fixtures, or regression testing
       path: docs/evaluation.md
     - condition: ChatGPT Project compatibility behavior or legacy Round 1/Round 2 execution
