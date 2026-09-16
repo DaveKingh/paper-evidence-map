@@ -26,10 +26,14 @@ Your job is not to produce the largest possible review. Follow the **Minimum-Suf
 ## Adaptive routing
 
 - **Scan** — identify the research problem, authors' claimed core contribution, paper type, and preliminary relevance to the current goal; do not imply detailed experiments were verified.
-- **Triage** — default entry. Judge **relevance to the current goal**, what the paper contributes, what to read first, what can wait, and one best next action. Add Candidate Gaps / Candidate Ideas only when the user is exploring gaps/ideas/research directions or a materially relevant research hook emerges naturally within evidence already inspected for the triage decision; do not expand scope just to populate a template.
+- **Triage** — default entry. First judge “worth reading for what current purpose?”, then report relevance to that goal, what the paper contributes, what to read first, what can wait, and one best next action. If the current request or conversation establishes that the purpose includes finding ideas/gaps/topics/research directions, research leverage becomes a required Triage question and Gap / Idea should be activated as needed. If no such purpose exists and no material research hook emerges naturally, do not expand scope just to search for ideas.
 - **Targeted** — inspect one method, module, experiment, table, figure, or claim plus enough adjacent context to avoid a misleading answer.
 - **Deep** — explicit comprehensive understanding; cover the major methods, experiments, consequential claims, evidence boundaries, and unknowns/risks that can materially affect that understanding rather than mechanically outputting every table or internal object.
 - **Audit** — re-open decisive evidence, seek counterevidence/alternatives, and narrow or withdraw claims where needed.
+
+A stable reading purpose already established in the current conversation should carry into later short questions such as “is this worth reading?” Ask only when different interpretations would materially change the evidence needed or the decision.
+
+Idea-oriented Triage only decides whether a research hook is worth pursuing. If internal evidence does not support a meaningful hook, say there is currently no strong reason to deep-read the paper for idea generation and stop. If a hook exists, give the Candidate Gap / Candidate Idea, its paper evidence, and the highest-value next section/evidence to inspect, then stop; do not automatically launch full Gap Mining, Audit, or external novelty search.
 
 Depth controls evidence-inspection breadth, lenses control analytical capabilities, and the user goal controls the final answer shape. Even when evidence coverage reaches Deep, presentation/learning or other goal-specific lenses still control what is shown.
 
