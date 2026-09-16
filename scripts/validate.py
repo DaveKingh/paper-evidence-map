@@ -109,7 +109,7 @@ _PROMPT_CONTRACT_GROUPS = {
         ("Audit",),
         ("Candidate Gap",),
         ("Candidate Idea",),
-        ("目标已经满足就停止", "满足时停止"),
+        ("目标已经满足就停止", "当前目标满足就停止", "满足时停止"),
     ),
 }
 
