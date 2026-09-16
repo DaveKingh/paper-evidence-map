@@ -2,9 +2,9 @@
 
 ## 在 ChatGPT 中使用（推荐）
 
-1. 打开[完整版自适应提示词](../prompts/zh-CN/project-instructions.md)；需要更短常驻指令时使用[精简自适应版](../prompts/zh-CN/project-instructions-compact.md)。
+1. 打开 [ChatGPT Project 专用版](../prompts/zh-CN/project-instructions-chatgpt-project.md)；它在 8,000 字符限制内尽量保留完整版规则。其他环境可使用[完整版](../prompts/zh-CN/project-instructions.md)，需要更短指令时使用 [Compact 版](../prompts/zh-CN/project-instructions-compact.md)。
 2. 在 ChatGPT 新建一个 Project，例如 **论文证据地图 / Paper Evidence Map**。
-3. 打开 Project settings，把完整提示词粘贴到 Project instructions。
+3. 打开 Project settings，把 ChatGPT Project 专用版完整粘贴到 Project instructions。
 4. 一篇论文一个聊天，上传主论文和关系明确的补充材料。
 5. **直接问你真正的问题，不需要先发送“第一轮”。**
 

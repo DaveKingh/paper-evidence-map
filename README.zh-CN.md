@@ -68,9 +68,9 @@ PEM v0.2 因此遵守三条核心规则：
 
 如果只是使用工作流，不需要克隆仓库。
 
-1. 选择[完整版提示词](prompts/zh-CN/project-instructions.md)，或需要更短常驻指令时使用[精简自适应版](prompts/zh-CN/project-instructions-compact.md)。
+1. ChatGPT Project 优先使用 [8,000 字符限制内的专用版](prompts/zh-CN/project-instructions-chatgpt-project.md)；其他环境可选[完整版](prompts/zh-CN/project-instructions.md)，需要更短指令时使用 [Compact 版](prompts/zh-CN/project-instructions-compact.md)。
 2. 新建一个 ChatGPT Project，例如 **Paper Evidence Map / 论文证据地图**。
-3. 把完整提示词粘贴进 Project instructions。
+3. 把 ChatGPT Project 专用版完整粘贴进 Project instructions。
 4. 一篇论文一个 Chat，上传正文和关系明确的补充材料。
 5. **直接问真实问题，不需要先发送“第一轮”。**
 
