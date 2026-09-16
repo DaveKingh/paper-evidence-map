@@ -39,7 +39,8 @@ Infer the user's goal from natural language. The user does not need to know or n
 Typical routing examples:
 
 - “What is this paper about?” -> Scan + Contribution.
-- “Is this paper worth reading for what I am working on?” -> Triage + Relevance + Contribution.
+- “Is this paper worth reading for what I am working on?” -> Triage + Relevance + Contribution; reading value must be explained relative to the current purpose.
+- “I am mainly looking for new research ideas—is this paper worth reading?” -> Triage + Relevance + Contribution + Gap + Idea.
 - “Can this paper give me research ideas?” -> Triage/Targeted + Relevance + Gap + Idea.
 - “How does this module work?” -> Targeted + Method.
 - “Why did the authors choose this model/baseline?” -> Targeted + Method + Experiment.
@@ -49,7 +50,7 @@ Typical routing examples:
 - “I need to present this paper to my advisor.” -> Targeted/Deep + Contribution + Method + Experiment + Presentation, with depth determined by the evidence coverage needed for the presentation. Presentation controls the final form; selecting Deep does not automatically mean outputting a full evidence map.
 - “What do I need to learn before I can understand this part?” -> Targeted + Learning + Method.
 
-These are routing demonstrations, not a keyword table. If the explicit current goal is narrower than an example or legacy trigger, follow the current goal. Expand lenses or depth for a newly discovered issue only when it passes the Materiality Gate.
+These are routing demonstrations, not a keyword table. If the explicit current goal is narrower than an example or legacy trigger, follow the current goal. If the conversation has already established a stable purpose—for example, “I am reading papers mainly to find new ideas”—a later “is this worth reading?” should inherit that purpose rather than require the user to repeat it. Ask only when different plausible purposes would materially change the evidence needed or the decision. Expand lenses or depth for a newly discovered issue only when it passes the Materiality Gate.
 
 **Depth controls how broadly evidence must be inspected, lenses control which analytical capabilities are used, and the user's current goal controls the final answer shape.** A deeper depth does not require exposing every internal analysis object.
 
@@ -61,16 +62,22 @@ Choose the minimum reliable depth.
 Identify the research problem, the authors' claimed core contribution, paper type, and preliminary relevance to the user's current goal. Do not imply that the full method or experimental claims have been verified.
 
 ### D1 — Triage
-Default for “worth reading?”, relevance, or early idea questions.
+Default for “worth reading?”, relevance, or early idea questions. **Reading value is always goal-relative: first answer “worth reading for what current purpose?”**
 
-By default output five core items:
+Every Triage returns five core items by default:
 1. **Relevance to the current goal:** high / medium / low / cannot judge, explicitly stating what goal the rating refers to. Relevance must not be treated as equivalent to “worth a deep read,” “contains a Research Gap,” or “should become a research direction.”
 2. What the paper contributes.
 3. What to read first: prioritized sections, figures, tables, or modules.
 4. What can be skipped for now, if defensible.
 5. One recommended next action.
 
-**Candidate research leverage is not a mandatory Triage field.** Add a Candidate Gap / Candidate Idea only when the user is explicitly exploring gaps, ideas, or research directions, or when a materially relevant research hook emerges naturally within evidence already inspected for the triage decision. Do not activate Gap/Idea or expand scope merely to fill a template.
+Then apply a **goal-conditioned extension**:
+
+- If the user explicitly states, or the current conversation reasonably establishes, that the purpose includes **finding ideas, gaps, topics, or research directions**, then research leverage is a **required Triage question** and Gap / Idea lenses should be activated as needed.
+- If the purpose is presentation, method learning, benchmark selection, experiment understanding, or another specific goal, add only the judgments directly relevant to that purpose; do not automatically mine ideas.
+- If no research-exploration goal is present and no material research hook emerges naturally, do not expand scope merely to search for a Gap / Idea.
+
+Idea-oriented Triage only needs to decide whether a research hook is worth pursuing. If there is not enough internal evidence for a meaningful hook, say there is currently no strong reason to deep-read the paper for idea generation and STOP. If a hook exists, report a Candidate Gap / Candidate Idea, its paper evidence, and the highest-value next section/evidence to inspect, then STOP. Do not automatically launch full Gap Mining, Audit, or external novelty search unless the user asks to continue.
 
 Do not append a full experiment inventory or complete claim matrix by default.
 
