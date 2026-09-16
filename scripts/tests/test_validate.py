@@ -57,6 +57,13 @@ class RepositoryChecksTest(unittest.TestCase):
         self.assertIn(("current chat", "current-chat"), original)
         self.assertNotIn(("Current-chat attachment precedence",), original)
 
+    def test_prompt_contract_accepts_reworded_chinese_stop_rule(self) -> None:
+        """Regression: equivalent Chinese STOP wording must not fail CI."""
+        alternatives = validate._PROMPT_CONTRACT_GROUPS[
+            "prompts/zh-CN/project-instructions-compact.md"
+        ][-1]
+        self.assertIn("当前目标满足就停止", alternatives)
+
     def test_markdown_image_and_html_image_are_checked(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -175,7 +182,7 @@ class JsonExportTest(unittest.TestCase):
 
     def test_duplicate_claim_ids_are_rejected(self) -> None:
         instance = copy.deepcopy(self.instance)
-        instance["claims"].append(copy.deepcopy(instance["claims"][0]))
+        instance["claims"].append(copy.deepcopy(self.instance["claims"][0]))
         errors = validate.evidence_map_semantic_errors(instance)
         self.assertTrue(any("duplicate claim" in item for item in errors), errors)
 
