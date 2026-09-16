@@ -27,6 +27,8 @@ Score each live run on four routing dimensions before applying the existing evid
 
 A routing failure is recorded even if the extra analysis is factually correct.
 
+**Required signals are semantic, not formatting requirements.** For example, an R5 response can satisfy `gap_origin_if_present`, `gap_status_if_present`, and `novelty_status_if_present` through clear natural-language wording; it does not need to print raw schema field names unless structured status is itself requested.
+
 ## Core routing fixture
 
 Use a fresh chat for every case with the same prompt version, model/mode, and `examples/synthetic/paper.pdf`. The seven canonical cases R1–R7 are defined machine-readably in the fixture.
@@ -34,11 +36,11 @@ Use a fresh chat for every case with the same prompt version, model/mode, and `e
 | ID | User request | Expected route | Required behavior | Failure examples |
 |---|---|---|---|---|
 | R1 | “What is this paper about?” | Scan | Short orientation: problem and core contribution; no claim matrix. | Full experiment inventory or deep audit. |
-| R2 | “Is this worth reading if I care about trustworthy model evaluation?” | Triage | Fit judgment, priority sections/evidence, and next reading step. | Full Deep review by default. |
+| R2 | “Is this worth reading if I care about trustworthy model evaluation?” | Triage | Fit judgment, priority sections/evidence, and next reading step. Research Gap/Idea content is optional and should not be manufactured merely to fill Triage. | Full Deep review by default or unnecessary Gap/Idea expansion. |
 | R3 | “Is Module C actually necessary?” | Targeted + Evidence/Critical | Inspect decisive ablation and give a bounded conclusion. | Reconstruct unrelated sections first. |
 | R4 | “Does the paper support its broad robustness claim?” | Targeted/Audit | Inspect robustness evidence and narrow to tested scope. | Accept broad robustness without boundary control. |
-| R5 | “Can this paper give me a research idea?” | Triage/Targeted + Gap/Idea | Surface a Candidate Gap/Idea if justified, with status and next check. | Claim verified novelty from the paper alone. |
-| R6 | “Read this paper deeply.” | Deep | Broad method/experiment/claim–evidence coverage. | Stop at a superficial summary. |
+| R5 | “Can this paper give me a research idea?” | Triage/Targeted + Gap/Idea | Surface a Candidate Gap/Idea if justified, communicate origin/internal support/external novelty status semantically, and give the next check. | Claim verified novelty from the paper alone. |
+| R6 | “Read this paper deeply.” | Deep | Broad method/experiment/claim–evidence coverage over all major evidence that could materially affect comprehensive understanding. | Stop at a superficial summary, or mechanically dump low-value inventory without synthesis. |
 | R7 | “Strictly audit the most important conclusions.” | Audit | Re-open decisive evidence, seek alternatives/counterevidence, narrow claims. | Merely restate a prior Deep pass. |
 
 ## Extended routing cases
@@ -47,9 +49,9 @@ These are valuable live tests but are intentionally kept outside the minimal mac
 
 | ID | User request | Expected route | Required behavior |
 |---|---|---|---|
-| R8 | “I need to present this paper tomorrow.” | Targeted/Deep + Presentation | Prioritize motivation, method flow, decisive result, limitation, likely questions. |
+| R8 | “I need to present this paper tomorrow.” | Targeted/Deep + Presentation | Prioritize motivation, method flow, decisive result, limitation, likely questions. Deep may govern evidence coverage, but the output should remain presentation-shaped rather than exposing a full Deep evidence map. |
 | R9 | “What should I learn before I can understand Section 3?” | Triage/Targeted + Learning | Minimal prerequisite path tied to that section. |
-| R10 | Upload paper and say “take a look.” | Triage | Brief fit/value map and suggested reading paths; do not assume Deep. |
+| R10 | Upload paper and say “take a look.” | Triage | Brief fit/value map and suggested reading paths; do not assume Deep or manufacture research ideas. |
 
 ## Legacy compatibility matrix
 
@@ -69,7 +71,7 @@ For every idea-oriented case, verify:
 1. The observation has a real paper locator or is marked uncertain.
 2. The gap is phrased as an unresolved question, not automatically as novelty.
 3. The Candidate Idea includes a testable research question or minimal experiment.
-4. External novelty is explicitly `Not checked` unless literature search was actually performed.
+4. External novelty is clearly communicated as not checked unless literature search was actually performed; literal `novelty_status` syntax is not required in ordinary prose.
 5. A missing experiment alone is not treated as sufficient evidence of publishable novelty.
 
 ## Routing failure classes
