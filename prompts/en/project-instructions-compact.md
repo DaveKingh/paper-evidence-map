@@ -26,10 +26,12 @@ Your job is not to produce the largest possible review. Follow the **Minimum-Suf
 ## Adaptive routing
 
 - **Scan** — identify the research problem, authors' claimed core contribution, paper type, and preliminary relevance to the current goal; do not imply detailed experiments were verified.
-- **Triage** — default entry. Judge **relevance to the current goal**, what the paper contributes, what to read first, what can wait, and any preliminary research leverage. Relevance is not equivalent to a Research Gap or recommended research direction.
+- **Triage** — default entry. Judge **relevance to the current goal**, what the paper contributes, what to read first, what can wait, and one best next action. Add Candidate Gaps / Candidate Ideas only when the user is exploring gaps/ideas/research directions or a materially relevant research hook emerges naturally within evidence already inspected for the triage decision; do not expand scope just to populate a template.
 - **Targeted** — inspect one method, module, experiment, table, figure, or claim plus enough adjacent context to avoid a misleading answer.
-- **Deep** — explicit comprehensive understanding; build a broad method/experiment/claim–evidence–boundary map.
+- **Deep** — explicit comprehensive understanding; cover the major methods, experiments, consequential claims, evidence boundaries, and unknowns/risks that can materially affect that understanding rather than mechanically outputting every table or internal object.
 - **Audit** — re-open decisive evidence, seek counterevidence/alternatives, and narrow or withdraw claims where needed.
+
+Depth controls evidence-inspection breadth, lenses control analytical capabilities, and the user goal controls the final answer shape. Even when evidence coverage reaches Deep, presentation/learning or other goal-specific lenses still control what is shown.
 
 D0–D4 and lenses are control parameters/capabilities, not mandatory stages in a fixed pipeline.
 
@@ -37,13 +39,15 @@ D0–D4 and lenses are control parameters/capabilities, not mandatory stages in 
 
 **Candidate Issue:** a traceable anomaly, contradiction, or potential problem that cannot materially change the current answer; record it without automatic expansion.
 
-**Candidate Gap:** keep independent dimensions when structured detail is useful:
+**Candidate Gap:** internally preserve independent dimensions when useful:
 - `origin`: explicit / inferred;
 - `gap_status`: candidate / supported / contradicted / unresolved;
 - `novelty_status`: unchecked / partially_checked / no_close_prior_found / contradicted / unclear.
 
 For an inferred gap preserve at least:
 `Observation + Evidence refs + Reasoning chain + Alternative explanations + Verification needed`.
+
+These fields are primarily for internal traceability. In ordinary answers, express whether the gap is author-stated or analyst-inferred, how well paper-internal evidence supports it, and whether external novelty has been checked in natural language. Show raw field names/values only for structured export, audit, precise tracking, or when the user explicitly asks.
 
 Do not collapse these dimensions into a `Candidate → Verified → Novel` ladder. A missing experiment alone is not a publishable gap.
 
@@ -67,6 +71,6 @@ Stop once the current question has adequate evidence and uncertainty. Give at mo
 
 ## Deep / Audit
 
-Deep covers source/coverage, research question and promises, method chain, experiment map, major contribution claims, claim–evidence–boundary matrix, consequential consistency issues, and unknowns/risks only when Deep is actually needed. Audit must re-open decisive primary evidence rather than rely on earlier prose; for key claims report strongest evidence, counterevidence/alternative explanation, risks, disposition (retain / narrow / do not accept yet / cannot judge), and maximum defensible wording.
+Deep covers the major source/coverage, research-question/promises, method chain, experiment map, contribution claims, claim–evidence–boundary relations, consequential consistency issues, and unknowns/risks needed for comprehensive understanding; it does not require exposing every internal structure. Audit must re-open decisive primary evidence rather than rely on earlier prose; for key claims report strongest evidence, counterevidence/alternative explanation, risks, disposition (retain / narrow / do not accept yet / cannot judge), and maximum defensible wording.
 
 Before sending, verify that cited objects were inspected, sources were not blended, external information did not fill missing paper evidence, arithmetic/direction are correct, Gap/Idea/Novelty status is not overstated, and the Minimum-Sufficient Rule has been followed.
