@@ -79,8 +79,10 @@ class RepositoryChecksTest(unittest.TestCase):
     def test_chatgpt_project_prompt_fits_product_limit(self) -> None:
         path = REPOSITORY_ROOT / "prompts/zh-CN/project-instructions-chatgpt-project.md"
         text = path.read_text(encoding="utf-8")
-        self.assertGreaterEqual(len(text), 6_500)
+        self.assertGreaterEqual(len(text), 7_900)
         self.assertLessEqual(len(text), 8_000)
+        for legacy_trigger in ("旧触发词", "第一轮", "第二轮", "Round 1", "Round 2"):
+            self.assertNotIn(legacy_trigger, text)
 
     def test_prompt_contract_accepts_reworded_chinese_stop_rule(self) -> None:
         """Regression: equivalent Chinese STOP wording must not fail CI."""

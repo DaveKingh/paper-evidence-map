@@ -8,6 +8,10 @@ All notable user-facing changes are documented here. This project follows [Seman
 
 - A Simplified Chinese ChatGPT Project edition that preserves the full prompt's core behavior while fitting the 8,000-character Project-instructions limit.
 
+### Changed
+
+- The ChatGPT Project edition now uses 7,977 of 8,000 available characters for the full behavior contract and omits legacy trigger aliases; the canonical full and compact prompts retain backward compatibility.
+
 ### Planned
 
 - Repeated live evaluations across the adaptive routing matrix.

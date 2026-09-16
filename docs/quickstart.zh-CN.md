@@ -27,22 +27,22 @@ Scan → Triage → Targeted → Deep → Audit
 
 当前目标已经满足时停止；只有可靠回答还需要更多证据时才继续升级。
 
-## 旧命令仍然兼容
+## 直接表达阅读目标
 
 ```text
-第一轮   → Deep 证据地图
-第二轮   → Audit 关键结论
-聚焦：X  → Targeted 定向阅读
+深入读这篇论文       → Deep
+严格复核这个关键结论 → Audit
+聚焦分析 X           → Targeted
 ```
 
-当你明确想要一条可重复的固定路径，而不是自动路由时，可以继续使用这些命令。
+ChatGPT Project 专用版不保留旧触发词；完整版和 Compact 版仍兼容旧用法。
 
 ## 用仓库自带案例验证证据能力
 
 如果要测试 Deep 证据地图路径：
 
 1. 上传 [`examples/synthetic/paper.pdf`](../examples/synthetic/paper.pdf)。
-2. 发送 `第一轮`。
+2. 发送“深入读这篇论文”。
 3. 与 [`expected-findings.md`](../examples/synthetic/expected-findings.md) 对照。
 4. 按[证据评分量表](evaluation.zh-CN.md)评分。
 5. 把回答保存成本地 Markdown，再运行：
@@ -81,5 +81,5 @@ python scripts/check_adaptive_routes.py
 - 一篇论文使用一个聊天；
 - 补充材料和正文放在同一个论文聊天；
 - 大多数情况直接用自然语言表达目的；
-- 明确需要 Deep/Audit 可重复路径时再使用“第一轮/第二轮”；
+- 明确需要 Deep/Audit 时，直接说“深入读”或“严格复核”；
 - 多论文比较前，先分别对每篇论文做到满足比较目标所需的阅读深度。
