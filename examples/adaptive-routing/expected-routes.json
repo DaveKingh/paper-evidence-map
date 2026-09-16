@@ -6,36 +6,36 @@
       "id": "R1",
       "request": "What is this paper about?",
       "expected_depth": "scan",
-      "required_signals": ["task", "core_contribution"],
-      "forbidden_signals": ["full_experiment_inventory", "full_claim_matrix"]
+      "required_signals": ["task", "core_contribution", "goal_relative_relevance"],
+      "forbidden_signals": ["full_experiment_inventory", "full_claim_matrix", "vague_overall_value_rating"]
     },
     {
       "id": "R2",
       "request": "Is this paper worth reading if I care about trustworthy model evaluation?",
       "expected_depth": "triage",
-      "required_signals": ["fit", "priority_sections", "next_step"],
-      "forbidden_signals": ["automatic_full_deep_review"]
+      "required_signals": ["goal_relative_relevance", "priority_sections", "next_step"],
+      "forbidden_signals": ["automatic_full_deep_review", "relevance_equals_research_gap"]
     },
     {
       "id": "R3",
       "request": "Is Module C actually necessary?",
       "expected_depth": "targeted",
-      "required_signals": ["ablation_evidence", "bounded_conclusion"],
+      "required_signals": ["ablation_evidence", "claim_direct_evidence", "bounded_conclusion"],
       "forbidden_signals": ["unrelated_full_paper_reconstruction"]
     },
     {
       "id": "R4",
       "request": "Does the paper support its broad robustness claim?",
       "expected_depth": "targeted_or_audit",
-      "required_signals": ["robustness_evidence", "tested_scope", "claim_boundary"],
-      "forbidden_signals": ["unbounded_robustness_acceptance"]
+      "required_signals": ["robustness_evidence", "tested_scope", "claim_boundary", "claim_direct_evidence_priority"],
+      "forbidden_signals": ["unbounded_robustness_acceptance", "summary_wording_overrides_results"]
     },
     {
       "id": "R5",
       "request": "Can this paper give me a research idea?",
       "expected_depth": "triage_or_targeted",
-      "required_signals": ["candidate_gap_or_none", "candidate_idea_status"],
-      "forbidden_signals": ["unverified_novelty_claim"]
+      "required_signals": ["candidate_gap_or_none", "gap_origin_if_present", "gap_status_if_present", "novelty_status_if_present", "candidate_idea_status"],
+      "forbidden_signals": ["unverified_novelty_claim", "candidate_verified_novel_single_axis"]
     },
     {
       "id": "R6",
@@ -52,12 +52,20 @@
       "forbidden_signals": ["mere_restatement"]
     }
   ],
+  "cross_case_invariants": [
+    "access_gate_before_strong_claims",
+    "materiality_gate_before_side_scope_expansion",
+    "sufficiency_stop_when_goal_answered",
+    "external_evidence_cannot_repair_missing_internal_evidence"
+  ],
   "failure_classes": [
     "MISROUTE",
     "OVERREAD",
     "UNDERREAD",
     "NO_STOP",
     "EVIDENCE_BYPASS",
-    "IDEA_OVERPROMOTION"
+    "IDEA_OVERPROMOTION",
+    "PROVENANCE_LEAK",
+    "NOVELTY_OVERCLAIM"
   ]
 }
