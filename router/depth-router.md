@@ -2,6 +2,8 @@
 
 Choose the minimum reading depth that can answer the user's current question reliably. Depth is a control parameter, not a mandatory stage sequence.
 
+Depth primarily controls **how broadly evidence must be inspected**. The active lens and user goal control **what analysis is performed and what is ultimately shown**. A deeper depth does not require exposing every internal analysis object.
+
 ## D0 — Scan
 
 Use when the user only needs orientation. Inspect enough primary material to identify the problem, claimed contribution, paper type, and preliminary relevance to the current goal when known. Do not claim detailed experimental support or give a vague overall paper-value rating.
@@ -13,8 +15,10 @@ Use by default for relevance and “worth reading?” questions. Determine:
 - relevance to the user's stated goal, without equating relevance with research value or a research gap;
 - what the paper contributes;
 - the highest-value sections/evidence objects to inspect next;
-- candidate gaps or idea hooks, if visible;
-- what can safely remain unread for now.
+- what can safely remain unread for now;
+- one best next action.
+
+Candidate gaps or idea hooks are optional: include them only when the user is exploring research opportunities or they emerge materially from evidence already inspected for the triage decision. Do not activate Gap/Idea or expand scope simply to fill a triage template.
 
 Triage is a decision aid, not a miniature full review.
 
@@ -24,7 +28,9 @@ Use for a specific method, module, experiment, table, claim, or research questio
 
 ## D3 — Deep
 
-Use when the user explicitly wants comprehensive understanding or when the requested synthesis genuinely depends on several major sections. Reconstruct the method, experiments, major claims, evidence links, unknowns, and boundaries. Existing Round 1 evidence rules apply.
+Use when the user explicitly wants comprehensive understanding or when the requested synthesis genuinely depends on several major sections. Cover the major methods, experiments, consequential claims, evidence links, boundaries, consistency issues, and unknowns that could materially affect that understanding.
+
+Deep is broad by intent but still Minimum-Sufficient: it does not require mechanically inspecting or displaying every table, experiment, or low-value detail. When Deep is used under a presentation, learning, or other goal-specific lens, Deep governs evidence coverage while that lens governs the final output form.
 
 ## D4 — Audit
 
