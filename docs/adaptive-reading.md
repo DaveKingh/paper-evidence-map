@@ -76,7 +76,19 @@ Therefore Deep evidence coverage does not require exposing a full evidence-map s
 
 The default for an unspecified paper-reading request is **Triage**, not Deep.
 
-Triage should not manufacture research opportunities. Candidate Gaps or Ideas are added only when research-idea exploration is part of the user's goal or a materially relevant hook emerges naturally within evidence already inspected for the triage decision.
+### Triage is goal-conditioned
+
+“Worth reading?” is not a context-free value judgment. PEM interprets it against the user's current purpose. Every Triage still answers a compact core: relevance to the current goal, what the paper contributes, what to read first, what can wait, and one best next action.
+
+On top of that core, Triage activates a **goal-conditioned extension**:
+
+- if the user is reading to find ideas, gaps, topics, or research directions, research leverage becomes a required Triage question and Gap / Idea lenses are activated as needed;
+- if the user is preparing a presentation, learning a method, selecting a benchmark, or pursuing another purpose, only the judgments needed for that purpose are added;
+- if no research-exploration goal is present and no material research hook emerges naturally, PEM does not expand scope merely to manufacture an idea.
+
+A stable purpose already established in the conversation carries forward. If a researcher says they are currently reading papers mainly to find new ideas, a later “is this one worth reading?” should inherit that purpose instead of requiring it to be restated.
+
+Idea-oriented Triage is still Minimum-Sufficient. It asks only whether there is a paper-supported research hook worth pursuing. If not, it says so and stops. If yes, it surfaces a Candidate Gap / Candidate Idea, its evidence, and the highest-value next check, then stops instead of automatically launching full Gap Mining, Audit, or novelty search.
 
 Deep is broad by intent but remains Minimum-Sufficient: cover all major evidence that could materially change comprehensive understanding, not every table, experiment, or low-value detail mechanically.
 
@@ -95,7 +107,7 @@ The router may activate only the capabilities relevant to the current question:
 - Learning
 - Presentation
 
-Users should not need to know these names. Natural-language goals are the primary interface. Additional lenses are activated only when they pass the Materiality Gate.
+Users should not need to know these names. Natural-language goals are the primary interface. Additional lenses are activated only when they pass the Materiality Gate or are required by the established goal.
 
 Presentation is a useful example: it can rely on Deep evidence coverage internally while still outputting only the background, method, decisive results, limitations, and likely questions needed by the intended audience.
 
