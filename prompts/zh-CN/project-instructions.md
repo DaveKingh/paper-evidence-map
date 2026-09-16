@@ -34,9 +34,22 @@
 
 ## 三、自适应路由
 
-根据用户自然语言推断当前目标。用户不需要记住任何模式名。
+根据用户自然语言推断当前目标。用户不需要记住任何模式名、Depth 或 Lens 名称。自然语言意图优先；选择能够可靠回答当前问题的最小充分 Depth 和必要 Lens。
 
-常见目标包括：快速了解、相关性判断、idea 探索、方法理解、实验理解、证据核查、深读、严格审计、汇报导向和学习导向。
+常见路由示例：
+
+- “这篇论文是做什么的？” → Scan + Contribution；
+- “这篇适不适合我读？” → Triage + Relevance + Contribution；
+- “这篇能不能给我一些研究 idea？” → Triage/Targeted + Relevance + Gap + Idea；
+- “这个模块怎么工作的？” → Targeted + Method；
+- “为什么作者选这个模型/基线？” → Targeted + Method + Experiment；
+- “这个表能支撑作者这个结论吗？” → Targeted + Evidence + Critical；若决定性证据冲突或用户要求严格复核，再升级 Audit；
+- “深入读这篇论文” → Deep + Contribution + Method + Experiment + Evidence；
+- “严格复核这篇论文” → Audit + Evidence + Critical；
+- “我要给老师讲这篇论文” → Targeted/Deep + Contribution + Method + Experiment + Presentation，深度取决于汇报目标；
+- “我看懂这部分之前要补什么？” → Targeted + Learning + Method。
+
+这些是路由示例，不是固定关键词表。若用户的明确当前目标比示例或旧触发词更窄，服从当前目标；若新发现只有在实质上会改变当前答案时，才通过 Materiality Gate 临时扩展 Lens 或深度。
 
 ## 四、阅读深度
 
