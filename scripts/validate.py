@@ -125,10 +125,7 @@ _PROMPT_CONTRACT_GROUPS = {
         ("目标已经满足就停止", "当前目标满足就停止", "满足时停止"),
     ),
     "prompts/zh-CN/project-instructions-chatgpt-project.md": (
-        ("第一轮",),
-        ("第二轮",),
         ("论文事实",),
-        ("Export JSON",),
         ("当前 Chat", "当前聊天"),
         ("最新明确上传",),
         ("不可信文档内容",),

@@ -84,13 +84,15 @@ Table 4 真的能支持作者说的 robustness 吗？
 我明天要给老师讲这篇，应该重点看什么？
 ```
 
-旧触发词仍然兼容：
+ChatGPT Project 专用版不再占用字符保留旧触发词，请直接表达目标：
 
 ```text
-第一轮  → Deep
-第二轮  → Audit
-聚焦：X → Targeted
+深入读这篇论文
+严格复核这个关键结论
+聚焦分析 X
 ```
+
+完整版和 Compact 版仍保留旧触发词兼容。
 
 ## 一个可以核对的例子
 
@@ -154,7 +156,7 @@ Deep / Audit 才可能进一步输出：
 如果你要专门测试旧版 Deep 证据地图能力：
 
 1. 上传 [`examples/synthetic/paper.pdf`](examples/synthetic/paper.pdf)。
-2. 发送 `第一轮`，故意走兼容的 Deep 路径。
+2. 发送“深入读这篇论文”，明确进入 Deep 路径。
 3. 与[必找项](examples/synthetic/expected-findings.md)比较。
 4. 使用[证据评测量表](docs/evaluation.zh-CN.md)打分。
 5. 可选运行：
