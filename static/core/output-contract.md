@@ -2,6 +2,12 @@
 
 Output size and structure follow the user's goal and selected reading depth. Depth controls how broadly evidence is inspected; the active goal/lens controls what is ultimately shown. Internal traceability structures do not need to be exposed verbatim.
 
+## Multi-paper provenance
+
+When several papers are present, keep the current Session Goal, Active Paper, Paper Set, and any explicitly requested Comparison Set distinct. Default to the newest explicitly uploaded accessible paper as Active Paper and keep paper-internal evidence isolated unless the user explicitly requests cross-paper comparison or synthesis.
+
+For a single-paper answer, do not use another paper to fill information the Active Paper did not report. For a cross-paper answer, attach every [Paper fact] and [Author interpretation] to a specific S-ID/title. [Analyst judgment] may combine papers only when the supporting sources and synthesis boundary are named. Resolve short references from context and ask only when provenance ambiguity would materially change the answer. Cross-paper Candidate Gaps/Ideas keep external novelty unchecked until an actual literature search is performed.
+
 ## Scan
 
 Return only orientation: what the paper is about, its central contribution, and preliminary relevance to the user's current goal when a goal is known. Do not imply that detailed experimental support has been verified.

@@ -90,6 +90,21 @@ A stable purpose already established in the conversation carries forward. If a r
 
 Idea-oriented Triage is still Minimum-Sufficient. It asks only whether there is a paper-supported research hook worth pursuing. If not, it says so and stops. If yes, it surfaces a Candidate Gap / Candidate Idea, its evidence, and the highest-value next check, then stops instead of automatically launching full Gap Mining, Audit, or novelty search.
 
+## Multi-paper sessions are a control layer
+
+PEM can keep several papers in one chat without turning v0.2 into a literature-review system. Multi-paper state sits before routing as source/session control; it does not introduce another Depth, lens, or schema.
+
+- **Session Goal** is the stable reading purpose carried across turns.
+- **Active Paper** is the paper analyzed in the current step; the default is the newest explicitly uploaded accessible paper.
+- **Paper Set** is the set of still-relevant current-chat papers, each assigned a stable S1/S2... identifier and optionally a short title.
+- **Comparison Set** is the subset used for cross-paper work. It exists only after an explicit request to compare, synthesize, find commonalities/differences, or identify a shared gap.
+
+The default is paper-internal evidence isolation. When S2 is Active, evidence from S1 cannot become an S2 fact or fill something S2 did not report. S1 may be used only as an explicitly marked comparison or external source. In a requested comparison, Paper facts and Author interpretations remain bound to individual papers; Analyst judgments may span papers only when their evidence sources and boundaries are listed.
+
+Short references use recoverable session context: “this paper” selects the Active Paper, “the previous paper” selects the previous Active Paper, and an earlier short title selects its bound source. “These papers” is actionable only when context uniquely determines the Comparison Set. PEM asks only when unresolved ambiguity would materially change provenance or conclusions.
+
+Idea-oriented comparison does not relax novelty discipline. A set of papers may support a cross-paper Candidate Gap or Candidate Idea, but it still cannot establish field-level novelty. Without an actual external literature search, novelty remains unchecked.
+
 Deep is broad by intent but remains Minimum-Sufficient: cover all major evidence that could materially change comprehensive understanding, not every table, experiment, or low-value detail mechanically.
 
 ## Lenses are capabilities, not commands

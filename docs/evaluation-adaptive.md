@@ -47,14 +47,16 @@ Use a fresh chat for every case with the same prompt version, model/mode, and `e
 
 These are valuable live tests but are intentionally kept outside the minimal machine-readable fixture so the fixture stays small and stable.
 
-| ID | User request | Expected route | Required behavior |
-|---|---|---|---|
-| R8 | “I need to present this paper tomorrow.” | Targeted/Deep + Presentation | Prioritize motivation, method flow, decisive result, limitation, likely questions. Deep may govern evidence coverage, but the output should remain presentation-shaped rather than exposing a full Deep evidence map. |
-| R9 | “What should I learn before I can understand Section 3?” | Triage/Targeted + Learning | Minimal prerequisite path tied to that section. |
-| R10 | Upload paper and say “take a look.” | Triage | Brief fit/value map and suggested reading paths; do not assume Deep or manufacture research ideas. |
+| ID | User request | Expected route | Required behavior | Failure examples |
+|---|---|---|---|---|
+| R8 | “I need to present this paper tomorrow.” | Targeted/Deep + Presentation | Prioritize motivation, method flow, decisive result, limitation, likely questions. Deep may govern evidence coverage, but the output should remain presentation-shaped rather than exposing a full Deep evidence map. | Full evidence-map dump that ignores the presentation goal. |
+| R9 | “What should I learn before I can understand Section 3?” | Triage/Targeted + Learning | Minimal prerequisite path tied to that section. | Generic course syllabus or unrelated paper audit. |
+| R10 | Upload paper and say “take a look.” | Triage | Brief fit/value map and suggested reading paths; do not assume Deep or manufacture research ideas. | Automatic Deep read or invented research hook. |
 | R11 | Context: “I am reading papers mainly to find new research ideas.” Then ask: “Is this one worth reading?” | Triage + Relevance + Contribution + Gap + Idea | Inherit the established idea-seeking goal; research leverage is required. Decide whether a paper-supported hook exists, surface a Candidate Gap/Idea if justified, and stop before full Gap Mining. | Treat the question as generic relevance-only Triage, ask the user to repeat the already established goal, or omit research leverage. |
+| R12 | Establish S1, then upload S2 and ask: “Does this paper have enough generalization evidence?” | Active-paper Triage/Targeted + Evidence | Resolve S2 as Active Paper; use only S2 and its official supplement for S2 claims; keep S1 isolated unless explicitly labeled as external comparison; report S2 omissions as not reported rather than filling them from S1. | Use S1 evidence to strengthen S2, silently blend facts/authors, or ask which paper when “this paper” is unambiguous. |
+| R13 | Establish S1 and S2, then ask: “Compare these two papers and identify any shared research hook.” | Explicit Comparison Set + goal-appropriate lenses | Build Comparison Set {S1, S2}; bind every Paper fact/Author interpretation to its paper; allow bounded Analyst judgment across both; keep novelty unchecked without external search. | Refuse all cross-paper use, omit source attribution, treat a shared Candidate Gap as established novelty, or import evidence from outside the explicit set. |
 
-R11 is specifically a **goal-carryover** test: short follow-up wording must not erase a stable research purpose already established in the conversation. At the same time, the inherited goal does not justify automatic Deep/Audit behavior; the Minimum-Sufficient and STOP rules still apply.
+R11 is specifically a **goal-carryover** test: short follow-up wording must not erase a stable research purpose already established in the conversation. R12 tests **Active-paper isolation**, including the default that the newest explicitly uploaded paper becomes Active. R13 tests that cross-paper synthesis is enabled by an **explicit Comparison Set** while fact/interpretation attribution stays paper-specific. None of these cases justifies automatic Deep/Audit behavior; the Minimum-Sufficient and STOP rules still apply.
 
 ## Legacy compatibility matrix
 
@@ -88,6 +90,7 @@ Use these labels in evaluation notes:
 - `NO_STOP` — useful answer is followed by unnecessary deep expansion.
 - `IDEA_OVERPROMOTION` — Candidate Gap/Idea is presented as established novelty or a strong research direction without required checks.
 - `EVIDENCE_BYPASS` — routing is correct but the answer skips necessary source evidence.
+- `PROVENANCE_LEAK` — evidence, facts, or author interpretations cross paper boundaries without explicit comparison scope and source attribution.
 
 ## Suggested run record
 
@@ -102,7 +105,7 @@ expected_depth:
 observed_behavior:
 relevant_evidence_inspected:
 question_answered: yes/no
-routing_failure: none | OVERREAD | UNDERREAD | MISROUTE | NO_STOP | IDEA_OVERPROMOTION | EVIDENCE_BYPASS
+routing_failure: none | OVERREAD | UNDERREAD | MISROUTE | NO_STOP | IDEA_OVERPROMOTION | EVIDENCE_BYPASS | PROVENANCE_LEAK
 approx_output_length:
 evidence_fidelity_score: optional / when applicable
 notes:

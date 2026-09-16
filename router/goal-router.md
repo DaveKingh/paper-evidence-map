@@ -25,6 +25,19 @@ Depth controls evidence-inspection breadth; the active lenses and user goal cont
 
 If no purpose is known, perform ordinary Relevance + Contribution Triage. Ask a clarifying question only when different plausible purposes would materially change the evidence inspected or the decision.
 
+## Multi-paper session control
+
+Treat multiple papers as a source/session-control concern, not a new depth, lens, or schema.
+
+- **Session Goal** carries a stable reading purpose across turns in the same chat.
+- **Active Paper** is the paper analyzed now; default to the newest explicitly uploaded accessible paper.
+- **Paper Set** contains the still-relevant current-chat papers under stable S1/S2... IDs.
+- **Comparison Set** is created only when the user explicitly requests comparison, synthesis, commonalities/differences, or a shared cross-paper gap. Do not infer it merely because several papers are present.
+
+By default, isolate each paper's internal evidence. Only the Active Paper and its clearly linked official supplement can support what that paper reports or claims; other papers must be explicitly labeled comparison/external sources and cannot repair missing reporting. Resolve “this paper,” “the previous paper,” and title-based references from context. Interpret “these papers” as a Comparison Set only when that set is uniquely recoverable. Ask only when unresolved provenance would materially change the answer.
+
+For cross-paper work, bind every Paper fact and Author interpretation to its source. Analyst judgment may synthesize across papers only with the evidence sources and boundaries stated. Idea-oriented comparison preserves the external-novelty rule: novelty remains unchecked until an actual literature search is performed.
+
 ## Ambiguous requests
 
 When the user uploads a paper without specifying a goal, do not launch a full evidence map. Perform a short Triage that explains what the paper is, what it appears useful for, and the most valuable next reading paths. Do not search for Candidate Gaps or Ideas merely to fill the Triage; surface them only when research-idea exploration is part of the goal or a materially relevant hook appears naturally in already inspected evidence.

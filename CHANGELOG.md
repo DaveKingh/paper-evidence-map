@@ -11,6 +11,7 @@ All notable user-facing changes are documented here. This project follows [Seman
 - Manifest-driven Skill structure with thin `SKILL.md`, always-loaded core rules, and on-demand references.
 - Candidate Gap / Candidate Idea status model to prevent premature novelty claims.
 - Adaptive-routing evaluation guide, machine-readable routing fixture, and deterministic fixture-contract checker.
+- Multi-paper session control for stable goals, active-paper selection, paper sets, explicit comparison sets, and paper-internal evidence isolation.
 
 ### Changed
 
@@ -18,7 +19,7 @@ All notable user-facing changes are documented here. This project follows [Seman
 - `Round 1` / `第一轮` and `Round 2` / `第二轮` remain backward-compatible Deep and Audit shortcuts rather than universal entry points.
 - Full and compact English/Chinese Project instructions now use goal-first, minimum-sufficient-depth routing.
 - README, quickstart, and methodology documentation now describe adaptive reading as the primary workflow.
-- Evaluation now distinguishes evidence-fidelity failures from routing failures such as OVERREAD, UNDERREAD, MISROUTE, NO_STOP, EVIDENCE_BYPASS, and IDEA_OVERPROMOTION.
+- Evaluation now distinguishes evidence-fidelity failures from routing failures such as OVERREAD, UNDERREAD, MISROUTE, NO_STOP, EVIDENCE_BYPASS, IDEA_OVERPROMOTION, and PROVENANCE_LEAK, with R12/R13 multi-paper cases.
 
 ### Planned
 
