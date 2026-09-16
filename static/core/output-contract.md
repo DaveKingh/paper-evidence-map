@@ -8,7 +8,7 @@ Return only orientation: what the paper is about, its central contribution, and 
 
 ## Triage
 
-Prefer this compact core structure:
+Reading value is goal-relative. Prefer this compact core structure:
 
 1. Relevance to the user's current goal: high / medium / low / cannot judge, with the goal and reasons stated. Relevance is not equivalent to deep-read value, a research gap, or a recommended research direction.
 2. What the paper contributes.
@@ -16,7 +16,11 @@ Prefer this compact core structure:
 4. What can remain unread for now, when defensible.
 5. One recommended next action.
 
-Candidate research leverage is optional. Add preliminary observations, Candidate Gaps, or Candidate Ideas only when the user is exploring research opportunities or when a materially relevant hook emerges naturally within evidence already inspected for the triage decision. Do not activate Gap/Idea or expand scope just to fill the output template.
+Then apply a **goal-conditioned extension**. If the explicit request or current conversation establishes that the user's purpose includes finding ideas, gaps, topics, or research directions, research leverage is required: inspect enough paper-internal evidence to decide whether a meaningful hook exists, and report a Candidate Gap / Candidate Idea when justified. If the purpose is presentation, learning, benchmark selection, experiment understanding, or another specific goal, add only the judgments needed for that purpose.
+
+If research exploration is not part of the goal and no material research hook emerges naturally, do not activate Gap/Idea or expand scope just to fill the output template. Conversely, when idea-seeking is the established goal, do not omit research leverage merely because the latest utterance is only “is this worth reading?”.
+
+For idea-oriented Triage, stop after deciding whether a research hook is worth pursuing. If none is sufficiently supported, say so. If one exists, give its paper evidence and the highest-value next check. Do not automatically continue into full Gap Mining, Audit, or external novelty search.
 
 Do not append a full experiment inventory or claim matrix unless needed to justify the triage decision.
 
