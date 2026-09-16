@@ -14,6 +14,10 @@ python scripts/check_adaptive_routes.py
 
 This deterministic check verifies the routing test matrix itself; it does **not** score model behavior.
 
+## Live-run harness discipline
+
+Each case must be answered by the model instance under test in the current fresh chat. If the host can create, delegate, fork, or hand off tasks, the harness must state: “You are the model under test. Do not create, delegate, fork, or wait for another task; answer this case directly.” A response that merely launches another task is not a completed run and must be recorded as an invalid attempt before any rerun. Keep this runner-level instruction out of the Paper Evidence Map prompt itself.
+
 ## Evaluation dimensions
 
 Score each live run on four routing dimensions before applying the existing evidence-fidelity rubric where relevant.
@@ -51,7 +55,7 @@ These are valuable live tests but are intentionally kept outside the minimal mac
 |---|---|---|---|---|
 | R8 | “I need to present this paper tomorrow.” | Targeted/Deep + Presentation | Prioritize motivation, method flow, decisive result, limitation, likely questions. Deep may govern evidence coverage, but the output should remain presentation-shaped rather than exposing a full Deep evidence map. | Full evidence-map dump that ignores the presentation goal. |
 | R9 | “What should I learn before I can understand Section 3?” | Triage/Targeted + Learning | Minimal prerequisite path tied to that section. | Generic course syllabus or unrelated paper audit. |
-| R10 | Upload paper and say “take a look.” | Triage | Brief fit/value map and suggested reading paths; do not assume Deep or manufacture research ideas. | Automatic Deep read or invented research hook. |
+| R10 | Upload paper and say “take a look.” | Triage | Do not downgrade to Scan. Mark personalized relevance cannot judge when no goal is known, identify 2–3 useful reading purposes, summarize the contribution, prioritize what to read/skip, and give one next action. | Scan-only summary, automatic Deep read, repeated request for a non-material goal clarification, or invented research hook. |
 | R11 | Context: “I am reading papers mainly to find new research ideas.” Then ask: “Is this one worth reading?” | Triage + Relevance + Contribution + Gap + Idea | Inherit the established idea-seeking goal; research leverage is required. Decide whether a paper-supported hook exists, surface a Candidate Gap/Idea if justified, and stop before full Gap Mining. | Treat the question as generic relevance-only Triage, ask the user to repeat the already established goal, or omit research leverage. |
 | R12 | Establish S1, then upload S2 and ask: “Does this paper have enough generalization evidence?” | Active-paper Triage/Targeted + Evidence | Resolve S2 as Active Paper; use only S2 and its official supplement for S2 claims; keep S1 isolated unless explicitly labeled as external comparison; report S2 omissions as not reported rather than filling them from S1. | Use S1 evidence to strengthen S2, silently blend facts/authors, or ask which paper when “this paper” is unambiguous. |
 | R13 | Establish S1 and S2, then ask: “Compare these two papers and identify any shared research hook.” | Explicit Comparison Set + goal-appropriate lenses | Build Comparison Set {S1, S2}; bind every Paper fact/Author interpretation to its paper; allow bounded Analyst judgment across both; keep novelty unchecked without external search. | Refuse all cross-paper use, omit source attribution, treat a shared Candidate Gap as established novelty, or import evidence from outside the explicit set. |

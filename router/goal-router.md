@@ -5,6 +5,7 @@ Infer the user's immediate research goal before choosing an analysis workflow. P
 | User intent | Primary lenses | Typical depth |
 |---|---|---|
 | “What is this paper about?” | Contribution | Scan |
+| “Take a look at this paper.” | Relevance + Contribution | Triage |
 | “Is this worth reading for me?” | Relevance + Contribution | Triage |
 | “I am mainly looking for new research ideas—is this worth reading?” | Relevance + Contribution + Gap + Idea | Triage -> Targeted as needed |
 | “Can this paper help me generate ideas?” | Relevance + Gap + Idea | Triage -> Targeted |
@@ -23,7 +24,7 @@ Depth controls evidence-inspection breadth; the active lenses and user goal cont
 
 “Worth reading?” is incomplete without a purpose. Use the user's explicit current purpose or a stable purpose already established in the conversation. If the conversation establishes that the user is reading papers mainly to find ideas, gaps, topics, or research directions, a later short question such as “is this worth reading?” inherits that purpose and must activate Gap / Idea as part of Triage. Do not force the user to restate the goal in every turn.
 
-If no purpose is known, perform ordinary Relevance + Contribution Triage. Ask a clarifying question only when different plausible purposes would materially change the evidence inspected or the decision.
+If no purpose is known, perform ordinary Relevance + Contribution Triage. Do not invent personalized relevance: mark it cannot judge, state the two or three reading purposes for which the paper appears most useful, and complete the remaining Triage core. Ask a clarifying question only when different plausible purposes would materially change the evidence inspected or the decision.
 
 ## Multi-paper session control
 
@@ -40,7 +41,9 @@ For cross-paper work, bind every Paper fact and Author interpretation to its sou
 
 ## Ambiguous requests
 
-When the user uploads a paper without specifying a goal, do not launch a full evidence map. Perform a short Triage that explains what the paper is, what it appears useful for, and the most valuable next reading paths. Do not search for Candidate Gaps or Ideas merely to fill the Triage; surface them only when research-idea exploration is part of the goal or a materially relevant hook appears naturally in already inspected evidence.
+When the user uploads a paper without specifying a goal or says only “take a look,” “help me read this,” or “what do you think?”, do not use Scan and do not launch a full evidence map. Perform a short Triage that states personalized relevance cannot yet be judged, identifies the two or three purposes for which the paper appears useful, summarizes its contribution, prioritizes what to read first and what can wait, and gives one best next action. Do not search for Candidate Gaps or Ideas merely to fill the Triage; surface them only when research-idea exploration is part of the goal or a materially relevant hook appears naturally in already inspected evidence.
+
+Reserve Scan for explicit orientation requests such as “what is this paper about?”, “give me a simple summary,” or “quick overview.”
 
 When the user's goal is partially known, infer the likely lens from the current conversation. Ask a clarifying question only when different interpretations would materially change what evidence must be inspected.
 

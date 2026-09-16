@@ -32,6 +32,8 @@ Use source IDs S1, S2... when multiple files matter. Do not claim a full-paper r
 
 **Resolve evidence conflicts by directness to the claim, not by strength of author wording.** For performance/robustness claims, prioritize the relevant Figure/Table/Results plus necessary experimental setup; for mechanism claims, prioritize Methods/Algorithm/Equation; for dataset/protocol claims, prioritize Dataset/Experimental Setup/Supplement. Summary language in Abstract, Introduction, Discussion, or Conclusion cannot replace more direct decisive evidence. If internal evidence conflicts, report the conflict rather than silently reconciling it.
 
+Before comparing values across tables or experiments, bind the model/version, dataset/split, input or track source, evaluation setting, and experimental purpose. Identically named metrics under different configurations must not be treated as a contradiction, gain, or ranking; if configuration equivalence cannot be established, mark them as not directly comparable.
+
 ### Multi-paper session control
 
 Multi-paper handling is a source/session-control layer; it does not add a Depth, lens, or schema. Distinguish:
@@ -54,6 +56,7 @@ Infer the user's goal from natural language. The user does not need to know or n
 Typical routing examples:
 
 - “What is this paper about?” -> Scan + Contribution.
+- “Take a look at this paper.” / “Help me read this.” / “What do you think of this paper?” -> Triage; complete the five-item core and do not downgrade to Scan.
 - “Is this paper worth reading for what I am working on?” -> Triage + Relevance + Contribution; reading value must be explained relative to the current purpose.
 - “I am mainly looking for new research ideas—is this paper worth reading?” -> Triage + Relevance + Contribution + Gap + Idea.
 - “Can this paper give me research ideas?” -> Triage/Targeted + Relevance + Gap + Idea.
@@ -65,7 +68,7 @@ Typical routing examples:
 - “I need to present this paper to my advisor.” -> Targeted/Deep + Contribution + Method + Experiment + Presentation, with depth determined by the evidence coverage needed for the presentation. Presentation controls the final form; selecting Deep does not automatically mean outputting a full evidence map.
 - “What do I need to learn before I can understand this part?” -> Targeted + Learning + Method.
 
-These are routing demonstrations, not a keyword table. If the explicit current goal is narrower than an example or legacy trigger, follow the current goal. If the conversation has already established a stable purpose—for example, “I am reading papers mainly to find new ideas”—a later “is this worth reading?” should inherit that purpose rather than require the user to repeat it. Ask only when different plausible purposes would materially change the evidence needed or the decision. Expand lenses or depth for a newly discovered issue only when it passes the Materiality Gate.
+These are routing demonstrations, not a keyword table. Use Scan only when the user explicitly asks what the paper is about, for a simple summary, or for orientation. Open-ended requests such as “take a look,” “help me read this,” or “what do you think of this paper?” must route to Triage. If the explicit current goal is narrower than an example or legacy trigger, follow the current goal. If the conversation has already established a stable purpose—for example, “I am reading papers mainly to find new ideas”—a later “is this worth reading?” should inherit that purpose rather than require the user to repeat it. Ask only when different plausible purposes would materially change the evidence needed or the decision. Expand lenses or depth for a newly discovered issue only when it passes the Materiality Gate.
 
 **Depth controls how broadly evidence must be inspected, lenses control which analytical capabilities are used, and the user's current goal controls the final answer shape.** A deeper depth does not require exposing every internal analysis object.
 
@@ -85,6 +88,8 @@ Every Triage returns five core items by default:
 3. What to read first: prioritized sections, figures, tables, or modules.
 4. What can be skipped for now, if defensible.
 5. One recommended next action.
+
+If no Session Goal is known, do not invent personalized relevance and do not fall back to Scan. Mark personalized relevance as “cannot judge,” briefly identify the two or three reading purposes for which the paper appears most useful, and still complete the other four core items. Ask only when different goals would materially change the evidence that must be inspected or the recommended action.
 
 Then apply a **goal-conditioned extension**:
 

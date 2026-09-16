@@ -57,6 +57,24 @@ class RepositoryChecksTest(unittest.TestCase):
         self.assertIn(("current chat", "current-chat"), original)
         self.assertNotIn(("Current-chat attachment precedence",), original)
 
+    def test_prompt_contract_protects_open_request_triage_and_config_binding(self) -> None:
+        """Regression: vague requests stay Triage and cross-table values stay config-bound."""
+        for relative_path in (
+            "prompts/en/project-instructions.md",
+            "prompts/en/project-instructions-compact.md",
+        ):
+            groups = validate._PROMPT_CONTRACT_GROUPS[relative_path]
+            self.assertIn(("take a look", "help me read this", "what do you think of this paper"), groups)
+            self.assertIn(("not directly comparable",), groups)
+
+        for relative_path in (
+            "prompts/zh-CN/project-instructions.md",
+            "prompts/zh-CN/project-instructions-compact.md",
+        ):
+            groups = validate._PROMPT_CONTRACT_GROUPS[relative_path]
+            self.assertIn(("看一下", "帮我读读", "这篇怎么样"), groups)
+            self.assertIn(("不可直接比较",), groups)
+
     def test_prompt_contract_accepts_reworded_chinese_stop_rule(self) -> None:
         """Regression: equivalent Chinese STOP wording must not fail CI."""
         alternatives = validate._PROMPT_CONTRACT_GROUPS[

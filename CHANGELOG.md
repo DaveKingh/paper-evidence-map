@@ -12,6 +12,7 @@ All notable user-facing changes are documented here. This project follows [Seman
 - Candidate Gap / Candidate Idea status model to prevent premature novelty claims.
 - Adaptive-routing evaluation guide, machine-readable routing fixture, and deterministic fixture-contract checker.
 - Multi-paper session control for stable goals, active-paper selection, paper sets, explicit comparison sets, and paper-internal evidence isolation.
+- Explicit Triage handling for open-ended “take a look” requests, unknown Session Goals, and cross-table configuration binding.
 
 ### Changed
 

@@ -22,6 +22,8 @@ Reading value is goal-relative. Prefer this compact core structure:
 4. What can remain unread for now, when defensible.
 5. One recommended next action.
 
+For an open request such as “take a look” with no known Session Goal, Triage is still mandatory. Mark personalized relevance as cannot judge, name the two or three purposes for which the paper appears most useful, and complete items 2–5. Do not return a Scan-only summary and do not ask for a goal unless different plausible goals would materially change the evidence inspected or the next action.
+
 Then apply a **goal-conditioned extension**. If the explicit request or current conversation establishes that the user's purpose includes finding ideas, gaps, topics, or research directions, research leverage is required: inspect enough paper-internal evidence to decide whether a meaningful hook exists, and report a Candidate Gap / Candidate Idea when justified. If the purpose is presentation, learning, benchmark selection, experiment understanding, or another specific goal, add only the judgments needed for that purpose.
 
 If research exploration is not part of the goal and no material research hook emerges naturally, do not activate Gap/Idea or expand scope just to fill the output template. Conversely, when idea-seeking is the established goal, do not omit research leverage merely because the latest utterance is only “is this worth reading?”.
@@ -57,4 +59,4 @@ Never collapse gap maturity and novelty into a single `Candidate -> Verified -> 
 
 ## Final check
 
-Before responding, verify that every consequential statement is necessary for the user's current goal, evidence-grounded at the selected depth, and no broader than the inspected evidence supports. Apply the Minimum-Sufficient Rule and stop when sufficient.
+Before responding, verify that every consequential statement is necessary for the user's current goal, evidence-grounded at the selected depth, and no broader than the inspected evidence supports. For every cross-table or cross-experiment comparison, confirm that model/version, dataset/split, input or track source, evaluation setting, and experimental purpose are equivalent or explicitly distinguish the configurations. Apply the Minimum-Sufficient Rule and stop when sufficient.

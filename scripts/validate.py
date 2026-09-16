@@ -58,6 +58,8 @@ _PROMPT_CONTRACT_GROUPS = {
         ("D4", "Audit"),
         ("Candidate Gap",),
         ("Candidate Idea",),
+        ("take a look", "help me read this", "what do you think of this paper"),
+        ("not directly comparable",),
         ("Stop when", "stop and give"),
     ),
     "prompts/en/project-instructions-compact.md": (
@@ -74,6 +76,8 @@ _PROMPT_CONTRACT_GROUPS = {
         ("Audit",),
         ("Candidate Gap",),
         ("Candidate Idea",),
+        ("take a look", "help me read this", "what do you think of this paper"),
+        ("not directly comparable",),
         ("Stop once", "stops when"),
     ),
     "prompts/zh-CN/project-instructions.md": (
@@ -93,6 +97,8 @@ _PROMPT_CONTRACT_GROUPS = {
         ("D4", "Audit"),
         ("Candidate Gap",),
         ("Candidate Idea",),
+        ("看一下", "帮我读读", "这篇怎么样"),
+        ("不可直接比较",),
         ("停止", "停止继续扩展"),
     ),
     "prompts/zh-CN/project-instructions-compact.md": (
@@ -109,6 +115,8 @@ _PROMPT_CONTRACT_GROUPS = {
         ("Audit",),
         ("Candidate Gap",),
         ("Candidate Idea",),
+        ("看一下", "帮我读读", "这篇怎么样"),
+        ("不可直接比较",),
         ("目标已经满足就停止", "当前目标满足就停止", "满足时停止"),
     ),
 }

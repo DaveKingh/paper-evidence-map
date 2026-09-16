@@ -76,9 +76,15 @@ Therefore Deep evidence coverage does not require exposing a full evidence-map s
 
 The default for an unspecified paper-reading request is **Triage**, not Deep.
 
+Unspecified does not mean Scan. Open requests such as “take a look,” “help me read this,” or “what do you think of this paper?” must run the Triage core. Scan is reserved for explicit orientation requests such as “what is this paper about?” or “give me a quick summary.”
+
 ### Triage is goal-conditioned
 
 “Worth reading?” is not a context-free value judgment. PEM interprets it against the user's current purpose. Every Triage still answers a compact core: relevance to the current goal, what the paper contributes, what to read first, what can wait, and one best next action.
+
+When no Session Goal is known, PEM does not guess personalized relevance and does not retreat to Scan. It marks personalized relevance as cannot judge, identifies the two or three reading purposes for which the paper appears most useful, and completes the rest of the Triage core. A question is necessary only when plausible goals would materially change the evidence inspected or next action.
+
+When results are compared across tables or experiments, configuration identity is part of evidence provenance: model/version, dataset/split, input or track source, evaluation setting, and experimental purpose must be bound before a difference is described as a contradiction, gain, or ranking.
 
 On top of that core, Triage activates a **goal-conditioned extension**:
 
