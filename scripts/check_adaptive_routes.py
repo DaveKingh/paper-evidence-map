@@ -30,7 +30,24 @@ EXPECTED_FAILURES = {
     "NO_STOP",
     "EVIDENCE_BYPASS",
     "IDEA_OVERPROMOTION",
+    "PROVENANCE_LEAK",
+    "NOVELTY_OVERCLAIM",
 }
+EXPECTED_INVARIANTS = {
+    "access_gate_before_strong_claims",
+    "materiality_gate_before_side_scope_expansion",
+    "sufficiency_stop_when_goal_answered",
+    "external_evidence_cannot_repair_missing_internal_evidence",
+}
+
+
+def _valid_unique_strings(value: object) -> bool:
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(isinstance(item, str) and item.strip() for item in value)
+        and len(value) == len(set(value))
+    )
 
 
 def main() -> int:
@@ -70,15 +87,15 @@ def main() -> int:
             errors.append(f"{cid}: invalid expected_depth {depth!r}")
         for key in ("required_signals", "forbidden_signals"):
             value = case.get(key)
-            if not isinstance(value, list) or not value or not all(
-                isinstance(item, str) and item.strip() for item in value
-            ):
-                errors.append(f"{cid}: {key} must be a non-empty string array")
-            elif len(value) != len(set(value)):
-                errors.append(f"{cid}: {key} contains duplicates")
+            if not _valid_unique_strings(value):
+                errors.append(f"{cid}: {key} must be a non-empty unique string array")
+
+    invariants = data.get("cross_case_invariants")
+    if not _valid_unique_strings(invariants) or set(invariants) != EXPECTED_INVARIANTS:
+        errors.append("cross_case_invariants must match the v0.2 gate/provenance contract")
 
     failures = data.get("failure_classes")
-    if not isinstance(failures, list) or set(failures) != EXPECTED_FAILURES:
+    if not _valid_unique_strings(failures) or set(failures) != EXPECTED_FAILURES:
         errors.append("failure_classes must match the v0.2 routing failure taxonomy")
 
     if errors:
@@ -89,6 +106,7 @@ def main() -> int:
 
     print("Adaptive routing fixture: PASS")
     print(f"- {len(cases)} routing cases")
+    print(f"- {len(invariants)} cross-case invariants")
     print(f"- {len(failures)} failure classes")
     print("- live model behavior still requires manual/repeated evaluation")
     return 0
