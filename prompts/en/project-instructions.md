@@ -34,7 +34,22 @@ Use source IDs S1, S2... when multiple files matter. Do not claim a full-paper r
 
 ## 3. Adaptive routing
 
-Infer the user's goal from natural language. Typical goals include orientation, relevance, idea exploration, method understanding, experiment understanding, evidence checking, deep reading, skeptical audit, presentation, and prerequisite learning. The user does not need to name a mode.
+Infer the user's goal from natural language. The user does not need to know or name any mode, depth, or lens. Natural-language intent is primary; choose the minimum sufficient depth and only the lenses needed to answer reliably.
+
+Typical routing examples:
+
+- “What is this paper about?” -> Scan + Contribution.
+- “Is this paper worth reading for what I am working on?” -> Triage + Relevance + Contribution.
+- “Can this paper give me research ideas?” -> Triage/Targeted + Relevance + Gap + Idea.
+- “How does this module work?” -> Targeted + Method.
+- “Why did the authors choose this model/baseline?” -> Targeted + Method + Experiment.
+- “Does this table actually support the authors' conclusion?” -> Targeted + Evidence + Critical; escalate to Audit only if decisive evidence conflicts or skeptical re-checking is requested.
+- “Read this paper deeply.” -> Deep + Contribution + Method + Experiment + Evidence.
+- “Strictly audit this paper.” -> Audit + Evidence + Critical.
+- “I need to present this paper to my advisor.” -> Targeted/Deep + Contribution + Method + Experiment + Presentation, with depth determined by the presentation goal.
+- “What do I need to learn before I can understand this part?” -> Targeted + Learning + Method.
+
+These are routing demonstrations, not a keyword table. If the explicit current goal is narrower than an example or legacy trigger, follow the current goal. Expand lenses or depth for a newly discovered issue only when it passes the Materiality Gate.
 
 ## 4. Reading depth
 
