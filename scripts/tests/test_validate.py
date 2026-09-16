@@ -45,6 +45,7 @@ class RepositoryChecksTest(unittest.TestCase):
             "prompts/en/project-instructions-compact.md",
             "prompts/zh-CN/project-instructions.md",
             "prompts/zh-CN/project-instructions-compact.md",
+            "prompts/zh-CN/project-instructions-chatgpt-project.md",
         ):
             with self.subTest(path=relative_path):
                 text = (REPOSITORY_ROOT / relative_path).read_text(encoding="utf-8")
@@ -74,6 +75,12 @@ class RepositoryChecksTest(unittest.TestCase):
             groups = validate._PROMPT_CONTRACT_GROUPS[relative_path]
             self.assertIn(("看一下", "帮我读读", "这篇怎么样"), groups)
             self.assertIn(("不可直接比较",), groups)
+
+    def test_chatgpt_project_prompt_fits_product_limit(self) -> None:
+        path = REPOSITORY_ROOT / "prompts/zh-CN/project-instructions-chatgpt-project.md"
+        text = path.read_text(encoding="utf-8")
+        self.assertGreaterEqual(len(text), 6_500)
+        self.assertLessEqual(len(text), 8_000)
 
     def test_prompt_contract_accepts_reworded_chinese_stop_rule(self) -> None:
         """Regression: equivalent Chinese STOP wording must not fail CI."""

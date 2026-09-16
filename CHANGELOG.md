@@ -4,6 +4,10 @@ All notable user-facing changes are documented here. This project follows [Seman
 
 ## [Unreleased]
 
+### Added
+
+- A Simplified Chinese ChatGPT Project edition that preserves the full prompt's core behavior while fitting the 8,000-character Project-instructions limit.
+
 ### Planned
 
 - Repeated live evaluations across the adaptive routing matrix.

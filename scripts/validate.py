@@ -35,6 +35,11 @@ _MINIMUM_LENGTHS = {
     "prompts/en/project-instructions-compact.md": 3_000,
     "prompts/zh-CN/project-instructions.md": 3_000,
     "prompts/zh-CN/project-instructions-compact.md": 1_500,
+    "prompts/zh-CN/project-instructions-chatgpt-project.md": 6_500,
+}
+
+_MAXIMUM_LENGTHS = {
+    "prompts/zh-CN/project-instructions-chatgpt-project.md": 8_000,
 }
 
 # Each tuple is one behavioral invariant. At least one wording alternative in
@@ -119,6 +124,27 @@ _PROMPT_CONTRACT_GROUPS = {
         ("不可直接比较",),
         ("目标已经满足就停止", "当前目标满足就停止", "满足时停止"),
     ),
+    "prompts/zh-CN/project-instructions-chatgpt-project.md": (
+        ("第一轮",),
+        ("第二轮",),
+        ("论文事实",),
+        ("Export JSON",),
+        ("当前 Chat", "当前聊天"),
+        ("最新明确上传",),
+        ("不可信文档内容",),
+        ("未报告",),
+        ("自适应路由",),
+        ("D0", "Scan"),
+        ("D1", "Triage"),
+        ("D2", "Targeted"),
+        ("D3", "Deep"),
+        ("D4", "Audit"),
+        ("Candidate Gap",),
+        ("Candidate Idea",),
+        ("看一下", "帮我读读", "这篇怎么样"),
+        ("不可直接比较",),
+        ("立即停止", "停止"),
+    ),
 }
 
 
@@ -134,6 +160,9 @@ def check_prompt_contract(root: Path = ROOT) -> list[str]:
         minimum = _MINIMUM_LENGTHS[item]
         if len(text) < minimum:
             errors.append(f"prompt appears unexpectedly short: {item}")
+        maximum = _MAXIMUM_LENGTHS.get(item)
+        if maximum is not None and len(text) > maximum:
+            errors.append(f"prompt exceeds {maximum}-character product limit: {item}")
         folded = text.casefold()
         for alternatives in groups:
             if not any(marker.casefold() in folded for marker in alternatives):
