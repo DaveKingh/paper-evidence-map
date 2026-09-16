@@ -39,7 +39,8 @@
 常见路由示例：
 
 - “这篇论文是做什么的？” → Scan + Contribution；
-- “这篇适不适合我读？” → Triage + Relevance + Contribution；
+- “这篇适不适合我读？” → Triage + Relevance + Contribution；阅读价值必须相对于当前目的解释；
+- “我主要想找新的研究 idea，这篇值得读吗？” → Triage + Relevance + Contribution + Gap + Idea；
 - “这篇能不能给我一些研究 idea？” → Triage/Targeted + Relevance + Gap + Idea；
 - “这个模块怎么工作的？” → Targeted + Method；
 - “为什么作者选这个模型/基线？” → Targeted + Method + Experiment；
@@ -49,7 +50,7 @@
 - “我要给老师讲这篇论文” → Targeted/Deep + Contribution + Method + Experiment + Presentation，深度取决于汇报所需证据覆盖；Presentation 决定最终呈现，不因选择 Deep 就自动输出完整证据地图；
 - “我看懂这部分之前要补什么？” → Targeted + Learning + Method。
 
-这些是路由示例，不是固定关键词表。若用户的明确当前目标比示例或旧触发词更窄，服从当前目标；若新发现只有在实质上会改变当前答案时，才通过 Materiality Gate 临时扩展 Lens 或深度。
+这些是路由示例，不是固定关键词表。若用户的明确当前目标比示例或旧触发词更窄，服从当前目标。若当前对话已经建立了稳定目的（例如“最近读文献主要为了找新 idea”），后续“这篇值得读吗？”应继承该目的，不要求用户重复说明；只有不同目的会实质改变所需证据或判断时才询问。若新发现只有在实质上会改变当前答案时，才通过 Materiality Gate 临时扩展 Lens 或深度。
 
 **Depth 决定需要检查多广，Lens 决定需要调用什么分析能力，用户当前目标决定最终回答形态。** 选择更深的 Depth 不等于必须把所有内部分析对象逐项展示给用户。
 
@@ -63,9 +64,9 @@
 
 ### D1 — Triage｜阅读分诊
 
-这是“值不值得读”“和我有没有关系”“能不能给我 idea”等问题的默认入口。
+这是“值不值得读”“和我有没有关系”“能不能给我 idea”等问题的默认入口。**阅读价值始终是 goal-relative：先回答“为了当前什么目的，值不值得继续投入时间”。**
 
-默认输出核心五项：
+所有 Triage 默认输出核心五项：
 
 1. **与当前目标的相关性**：高 / 中 / 低 / 无法判断，并明确“针对什么目标”判断；相关性不得直接等同于值得精读、存在 Research Gap 或适合作为研究方向；
 2. **论文做了什么**：一段简洁说明；
@@ -73,7 +74,13 @@
 4. **目前可以暂时略过什么**：只有在确实不影响当前目标时才给出；
 5. **下一步建议**：只给一个最有价值的下一步。
 
-**潜在研究价值不是普通 Triage 的必填项。** 只有当用户明确在探索 Gap / Idea / 研究方向，或者在完成上述 Triage 所需的证据范围内自然出现了与当前目标实质相关的研究杠杆时，才补充 Candidate Gap / Candidate Idea。不得为了填满模板而额外调用 Gap / Idea 或扩大阅读范围。
+在此基础上使用 **Goal-conditioned extension（目标条件扩展）**：
+
+- 若用户明确或根据当前对话可合理推断其目的包含**找 Idea、找 Gap、选题或研究方向探索**，则“研究启发潜力”是本次 Triage 的**必答项**，应按需调用 Gap / Idea Lens；
+- 若用户目标是汇报、学习方法、找 benchmark、理解实验等，则只增加与该目的直接相关的判断，不自动挖 Idea；
+- 若用户未表达研究探索目的，也没有自然出现的 material research hook，则不要为了模板完整性主动扩大范围去找 Gap / Idea。
+
+Idea-oriented Triage 只需判断“是否存在值得继续追的 research hook”：若没有足够内部证据支持明显 hook，明确说明“目前没有足够理由为了找 idea 深读”并 STOP；若有，则给出 Candidate Gap / Candidate Idea、对应证据位置和最值得继续看的部分，然后 STOP。除非用户继续要求，不自动进入完整 Gap Mining、Audit 或领域新颖性检索。
 
 不要默认附加完整实验清单、完整 Claim Matrix、完整局限性分析。
 
