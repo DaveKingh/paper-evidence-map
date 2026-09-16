@@ -6,6 +6,7 @@ Infer the user's immediate research goal before choosing an analysis workflow. P
 |---|---|---|
 | “What is this paper about?” | Contribution | Scan |
 | “Is this worth reading for me?” | Relevance + Contribution | Triage |
+| “I am mainly looking for new research ideas—is this worth reading?” | Relevance + Contribution + Gap + Idea | Triage -> Targeted as needed |
 | “Can this paper help me generate ideas?” | Relevance + Gap + Idea | Triage -> Targeted |
 | “How does this method/module work?” | Method | Targeted |
 | “Why did they choose X?” | Method + Experiment | Targeted |
@@ -17,6 +18,12 @@ Infer the user's immediate research goal before choosing an analysis workflow. P
 | “What do I need to learn first?” | Learning + Method | Triage or Targeted |
 
 Depth controls evidence-inspection breadth; the active lenses and user goal control the analysis and final answer shape. In particular, a Presentation request may need Deep evidence coverage without requiring the full Deep evidence-map output.
+
+## Goal-relative reading value
+
+“Worth reading?” is incomplete without a purpose. Use the user's explicit current purpose or a stable purpose already established in the conversation. If the conversation establishes that the user is reading papers mainly to find ideas, gaps, topics, or research directions, a later short question such as “is this worth reading?” inherits that purpose and must activate Gap / Idea as part of Triage. Do not force the user to restate the goal in every turn.
+
+If no purpose is known, perform ordinary Relevance + Contribution Triage. Ask a clarifying question only when different plausible purposes would materially change the evidence inspected or the decision.
 
 ## Ambiguous requests
 
