@@ -30,6 +30,10 @@ jobs:
         run: python scripts/build_fixture_pdf.py --check
       - name: Validate repository
         run: python scripts/validate.py
+      - name: Validate adaptive routing fixture contract
+        run: python scripts/check_adaptive_routes.py
+      - name: Validate gap schema JSON syntax
+        run: python -m json.tool schemas/gap.schema.json > /dev/null
       - name: Validate reference Markdown against structure and fixture assertions
         run: >-
           python scripts/validate.py
@@ -58,3 +62,7 @@ jobs:
         run: python scripts/build_fixture_pdf.py --check
       - name: Validate repository
         run: python scripts/validate.py
+      - name: Validate adaptive routing fixture contract
+        run: python scripts/check_adaptive_routes.py
+      - name: Validate gap schema JSON syntax
+        run: python -m json.tool schemas/gap.schema.json > /dev/null
