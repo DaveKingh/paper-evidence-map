@@ -52,6 +52,9 @@ These are valuable live tests but are intentionally kept outside the minimal mac
 | R8 | “I need to present this paper tomorrow.” | Targeted/Deep + Presentation | Prioritize motivation, method flow, decisive result, limitation, likely questions. Deep may govern evidence coverage, but the output should remain presentation-shaped rather than exposing a full Deep evidence map. |
 | R9 | “What should I learn before I can understand Section 3?” | Triage/Targeted + Learning | Minimal prerequisite path tied to that section. |
 | R10 | Upload paper and say “take a look.” | Triage | Brief fit/value map and suggested reading paths; do not assume Deep or manufacture research ideas. |
+| R11 | Context: “I am reading papers mainly to find new research ideas.” Then ask: “Is this one worth reading?” | Triage + Relevance + Contribution + Gap + Idea | Inherit the established idea-seeking goal; research leverage is required. Decide whether a paper-supported hook exists, surface a Candidate Gap/Idea if justified, and stop before full Gap Mining. | Treat the question as generic relevance-only Triage, ask the user to repeat the already established goal, or omit research leverage. |
+
+R11 is specifically a **goal-carryover** test: short follow-up wording must not erase a stable research purpose already established in the conversation. At the same time, the inherited goal does not justify automatic Deep/Audit behavior; the Minimum-Sufficient and STOP rules still apply.
 
 ## Legacy compatibility matrix
 
@@ -73,6 +76,7 @@ For every idea-oriented case, verify:
 3. The Candidate Idea includes a testable research question or minimal experiment.
 4. External novelty is clearly communicated as not checked unless literature search was actually performed; literal `novelty_status` syntax is not required in ordinary prose.
 5. A missing experiment alone is not treated as sufficient evidence of publishable novelty.
+6. Idea-oriented Triage stops after identifying whether a hook is worth pursuing; it does not automatically perform full Gap Mining, Audit, or novelty search.
 
 ## Routing failure classes
 
