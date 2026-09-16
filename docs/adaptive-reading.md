@@ -18,40 +18,50 @@ A researcher often does not know whether a paper deserves a full deep read. Comm
 
 Running a complete evidence map before answering these questions creates unnecessary reading and output.
 
-## The model
+## The control model
 
 ```text
 paper + user goal
        |
        v
-  source/access gate
+   Access Gate
        |
        v
-    goal router
+ Goal / Depth Router
        |
        v
-   depth router
+Minimum-Sufficient Reading
+ + required lenses
        |
        v
- select reading lenses
+    Evidence
+       |
+       +-- side finding --> Materiality Gate
+       |                    | yes: minimum necessary check, then return
+       |                    | no: Candidate Issue, do not expand
        |
        v
- inspect only necessary evidence
-       |
+Sufficiency / STOP Gate
+       | no: continue minimum necessary reading
+       | yes
        v
- answer current question
-       |
-       +--> stop when sufficient
-       |
-       +--> escalate only if a decisive uncertainty remains
+     Answer
 ```
+
+The three gates answer different questions:
+
+- **Access Gate:** is enough primary evidence accessible for the requested conclusion?
+- **Materiality Gate:** could a newly discovered issue materially change the current answer or next decision?
+- **Sufficiency / STOP Gate:** is the current goal already answered reliably enough to stop?
+
+D0–D4 and lenses are control parameters/capabilities selected inside this architecture, not mandatory stages in a fixed pipeline.
 
 ## Five depths
 
 | Depth | Purpose |
 |---|---|
-| Scan | Orientation |
-| Triage | Decide relevance and reading value |
+| Scan | Orientation and preliminary goal-relative relevance |
+| Triage | Decide relevance to the current goal and what to read next |
 | Targeted | Answer one focused question |
 | Deep | Build a broad evidence map |
 | Audit | Skeptically re-check decisive claims |
@@ -73,24 +83,32 @@ The router may activate only the capabilities relevant to the current question:
 - Learning
 - Presentation
 
-Users should not need to know these names. Natural-language goals are the primary interface.
+Users should not need to know these names. Natural-language goals are the primary interface. Additional lenses are activated only when they pass the Materiality Gate.
 
-## Candidate gaps and ideas
+## Candidate issues, gaps, and ideas
 
-Interesting observations may appear before a full paper audit. The workflow may therefore surface a **Candidate Gap** or **Candidate Idea** early, but must not present it as a validated research opportunity.
+A side anomaly that is not material to the current question can remain a **Candidate Issue** rather than expanding the read.
 
-A useful progression is:
+A **Candidate Gap** keeps independent dimensions when structured detail is needed:
+
+- `origin`: explicit / inferred;
+- `gap_status`: candidate / supported / contradicted / unresolved;
+- `novelty_status`: unchecked / partially_checked / no_close_prior_found / contradicted / unclear.
+
+For inferred gaps, preserve the observation, evidence references, reasoning chain, alternative explanations, and verification needed. Internal support and external novelty are different questions.
+
+A Candidate Gap may produce a **Candidate Idea** before a full-paper audit, but not an automatic novelty claim:
 
 ```text
 observation
   -> candidate gap
-  -> targeted evidence check
+  -> targeted internal evidence check when needed
   -> candidate idea
-  -> external novelty / feasibility checks when needed
-  -> research idea
+  -> external novelty / feasibility checks when required
+  -> research idea with bounded claims
 ```
 
-This preserves creative flexibility without confusing an interesting anomaly with established novelty.
+“No close prior found” within a documented search scope is not proof that no prior work exists.
 
 ## Relationship to Round 1 and Round 2
 
@@ -101,13 +119,14 @@ Round 1 and Round 2 remain available for reproducibility and backward compatibil
 
 They are optional tools rather than the required entrance to every reading session.
 
-## Three design rules
+## Minimum-Sufficient Rule
 
-1. **No user need -> no analysis.**
-2. **No evidence -> no strong claim.**
-3. **No verified gap -> no strong research idea.**
+**Inspect, verify, and output only what is necessary to answer the user's current goal reliably. Stop when sufficient. Expand scope, activate another lens, or increase depth only when a new finding could materially change the current answer.**
 
-The first rule controls scope, the second controls scientific support, and the third controls idea quality.
+Two additional scientific constraints remain:
+
+- **No evidence -> no strong claim.**
+- **No sufficiently supported gap -> no strong research idea; external novelty remains a separate status.**
 
 ## Test the router, not just the evidence map
 
@@ -119,6 +138,10 @@ Adaptive reading adds failure modes that v0.1 could not measure:
 - `NO_STOP`
 - `EVIDENCE_BYPASS`
 - `IDEA_OVERPROMOTION`
+- `PROVENANCE_LEAK`
+- `NOVELTY_OVERCLAIM`
+
+Cross-case invariants also test the Access, Materiality, and Sufficiency gates plus the rule that external evidence cannot repair missing internal evidence.
 
 Use [`examples/adaptive-routing/`](../examples/adaptive-routing/README.md) and [`docs/evaluation-adaptive.md`](evaluation-adaptive.md) for live routing tests.
 
