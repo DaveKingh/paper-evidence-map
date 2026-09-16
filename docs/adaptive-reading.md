@@ -56,6 +56,14 @@ The three gates answer different questions:
 
 D0–D4 and lenses are control parameters/capabilities selected inside this architecture, not mandatory stages in a fixed pipeline.
 
+A useful separation is:
+
+- **Depth** controls how broadly evidence must be inspected.
+- **Lens** controls which analytical capability is used.
+- **User goal** controls the final answer shape.
+
+Therefore Deep evidence coverage does not require exposing a full evidence-map structure when the user actually wants a presentation, prerequisite explanation, or another goal-specific deliverable.
+
 ## Five depths
 
 | Depth | Purpose |
@@ -63,10 +71,14 @@ D0–D4 and lenses are control parameters/capabilities selected inside this arch
 | Scan | Orientation and preliminary goal-relative relevance |
 | Triage | Decide relevance to the current goal and what to read next |
 | Targeted | Answer one focused question |
-| Deep | Build a broad evidence map |
+| Deep | Build broad evidence coverage for comprehensive understanding |
 | Audit | Skeptically re-check decisive claims |
 
 The default for an unspecified paper-reading request is **Triage**, not Deep.
+
+Triage should not manufacture research opportunities. Candidate Gaps or Ideas are added only when research-idea exploration is part of the user's goal or a materially relevant hook emerges naturally within evidence already inspected for the triage decision.
+
+Deep is broad by intent but remains Minimum-Sufficient: cover all major evidence that could materially change comprehensive understanding, not every table, experiment, or low-value detail mechanically.
 
 ## Lenses are capabilities, not commands
 
@@ -85,17 +97,21 @@ The router may activate only the capabilities relevant to the current question:
 
 Users should not need to know these names. Natural-language goals are the primary interface. Additional lenses are activated only when they pass the Materiality Gate.
 
+Presentation is a useful example: it can rely on Deep evidence coverage internally while still outputting only the background, method, decisive results, limitations, and likely questions needed by the intended audience.
+
 ## Candidate issues, gaps, and ideas
 
 A side anomaly that is not material to the current question can remain a **Candidate Issue** rather than expanding the read.
 
-A **Candidate Gap** keeps independent dimensions when structured detail is needed:
+A **Candidate Gap** keeps independent dimensions internally:
 
 - `origin`: explicit / inferred;
 - `gap_status`: candidate / supported / contradicted / unresolved;
 - `novelty_status`: unchecked / partially_checked / no_close_prior_found / contradicted / unclear.
 
 For inferred gaps, preserve the observation, evidence references, reasoning chain, alternative explanations, and verification needed. Internal support and external novelty are different questions.
+
+These fields are traceability controls, not mandatory user-facing syntax. Ordinary answers should normally translate them into natural language; exact field names/values are most useful for structured export, audit, precise tracking, or explicit user requests.
 
 A Candidate Gap may produce a **Candidate Idea** before a full-paper audit, but not an automatic novelty claim:
 
