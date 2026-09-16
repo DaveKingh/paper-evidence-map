@@ -10,7 +10,7 @@ body:
     id: version
     attributes:
       label: Repository version or commit
-      placeholder: v0.1.1 or commit hash
+      placeholder: v0.2.0 or commit hash
     validations:
       required: true
   - type: input

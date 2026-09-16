@@ -5,8 +5,8 @@ type: software
 authors:
   - family-names: "Yang"
     given-names: "Haochen"
-version: 0.1.1
-date-released: 2026-09-09
+version: 0.2.0
+date-released: 2026-09-17
 license: MIT
 repository-code: "https://github.com/DaveKingh/paper-evidence-map"
 keywords:

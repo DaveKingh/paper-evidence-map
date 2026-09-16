@@ -4,6 +4,14 @@ All notable user-facing changes are documented here. This project follows [Seman
 
 ## [Unreleased]
 
+### Planned
+
+- Repeated live evaluations across the adaptive routing matrix.
+- Additional discipline-specific evaluation cases.
+- Community-submitted anonymized failure cases.
+
+## [0.2.0] - 2026-09-17
+
 ### Added
 
 - Adaptive paper-reading router with Scan, Triage, Targeted, Deep, and Audit depths.
@@ -22,14 +30,7 @@ All notable user-facing changes are documented here. This project follows [Seman
 - README, quickstart, and methodology documentation now describe adaptive reading as the primary workflow.
 - Evaluation now distinguishes evidence-fidelity failures from routing failures such as OVERREAD, UNDERREAD, MISROUTE, NO_STOP, EVIDENCE_BYPASS, IDEA_OVERPROMOTION, and PROVENANCE_LEAK, with R12/R13 multi-paper cases.
 
-### Planned
-
-- Repeated live evaluations across the adaptive routing matrix.
-- Deterministic integration of adaptive-routing checks into the main repository validator/CI where appropriate.
-- Additional discipline-specific evaluation cases.
-- Community-submitted anonymized failure cases.
-
-## [0.1.1] - Unreleased
+## [0.1.1] - 2026-09-09
 
 ### Added
 

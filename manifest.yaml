@@ -1,5 +1,5 @@
 name: paper-evidence-map
-version: 0.2.0-dev
+version: 0.2.0
 description: >
   Declarative loading contract for adaptive, evidence-grounded paper reading.
   The router loads a small core for every task, then activates only the goal,

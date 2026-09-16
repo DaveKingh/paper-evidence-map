@@ -2,7 +2,7 @@
 name: paper-evidence-map
 description: Adaptive, evidence-grounded reading for a single research paper. Use when the user wants to decide whether a paper is worth reading, understand a method or experiment, check whether a claim is supported, prepare a presentation, or turn a paper-internal observation into a candidate research gap or idea.
 metadata:
-  version: "0.2.0-dev"
+  version: "0.2.0"
 ---
 
 # Paper Evidence Map — Router
